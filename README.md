@@ -1,73 +1,154 @@
-# React + TypeScript + Vite
+# Plateforme intelligente d’aide au contrôle de qualité du registre des contribuables (DGI)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## Description
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Cette application est une interface web moderne destinée à la **Direction Générale des Impôts (DGI)**.
+Elle vise à améliorer la **qualité et la fiabilité des données des contribuables** en fournissant une plateforme centralisée d’analyse et de gestion.
 
-## React Compiler
+Elle permet notamment :
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* le contrôle et la validation des données fiscales
+* la détection d’anomalies et de doublons
+* l’analyse intelligente des registres de contribuables
+* la génération de rapports d’aide à la décision
+* la centralisation des imports de données
+* la consultation rapide d’indicateurs métiers
 
-## Expanding the ESLint configuration
+L’objectif est de proposer une interface **utilisable en environnement réel (pré-production / production)** avec une forte attention portée à l’ergonomie, la performance et la lisibilité des données.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Stack technique
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Frontend
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+* React 18
+* TypeScript (strict)
+* Vite
+* Tailwind CSS
+* React Router v6
+* Lucide React (icônes)
+
+### Backend
+
+* Spring Boot (API principale métier)
+* Python (traitement / analyse / IA selon modules)
+* PostgreSQL (base de données)
+* API REST structurée
+
+### Outils
+
+* Postman (tests et validation des endpoints)
+* ESLint / Prettier (qualité du code)
+* Git + GitHub (workflow collaboratif)
+
+---
+
+## Architecture générale
+
+L’application suit une architecture **séparée frontend / backend** :
+
+* Frontend React : interface utilisateur et visualisation des données
+* Backend Spring Boot : logique métier, gestion des contribuables, API
+* Modules Python : analyse avancée / détection / traitement intelligent
+* Base de données PostgreSQL : stockage structuré des données fiscales
+
+---
+
+## Fonctionnalités UI
+
+### Interface principale
+
+* Sidebar de navigation dynamique (menu métier)
+* Topbar avec accès rapide aux actions et recherches
+* Layout global responsive (desktop / mobile)
+* Navigation fluide entre les modules
+
+### Modules fonctionnels
+
+* Tableau de bord (indicateurs globaux)
+* Gestion des contribuables
+* Analyse intelligente (IA / règles métier)
+* Détection de doublons
+* Recommandations d’anomalies
+* Génération de rapports
+* Import de données (CSV / fichiers structurés)
+* Paramètres système
+
+---
+
+## Système de thème
+
+L’application supporte un mode :
+
+* Clair
+* Sombre
+
+### Implémentation
+
+* Gestion via **Context React**
+* Variables CSS globales (`--bg-primary`, `--text-primary`, etc.)
+* Toggle global accessible depuis l’interface
+* Persistance du choix utilisateur
+
+---
+
+## Design & UX
+
+L’interface a été conçue avec une approche **UI-first**, en s’appuyant sur :
+
+* Figma pour la conception des maquettes
+* Un design orienté **dashboard administratif**
+* Une hiérarchie claire des informations
+* Une priorité donnée à la lisibilité des données métier
+
+---
+
+## Qualité et bonnes pratiques
+
+* Composants UI réutilisables (Button, Input, etc.)
+* Centralisation des styles via Tailwind + variables CSS
+* Structure modulaire par responsabilités
+* Respect du responsive design (mobile-first)
+* Séparation logique des couches (UI / layout / pages)
+
+---
+
+## Architecture du projet (Frontend)
+
+```
+src/
+│
+├── components/
+│   ├── ui/        # composants réutilisables (Button, Input, etc.)
+│   ├── layout/    # Sidebar, Topbar, MainLayout
+│
+├── pages/         # pages de l’application (Dashboard, etc.)
+├── context/       # ThemeContext, AuthContext (si existant)
+├── routes/        # configuration des routes React Router
+├── assets/        # images, logos, ressources statiques
+└── styles/        # variables CSS globales (theme system)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Outils utilisés
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+* **Postman** : test et validation des APIs Spring Boot et Python
+* **GitHub** : gestion des versions et collaboration
+* **Figma** : conception des interfaces utilisateur
+* **VS Code** : environnement de développement principal
+
+---
+
+## Objectif global
+
+L’objectif du projet est de fournir à la **DGI une plateforme moderne, exploitable et évolutive**, permettant :
+
+* une meilleure qualité des données fiscales
+* une détection rapide des incohérences
+* une aide à la décision basée sur les données
+* une interface intuitive adaptée aux agents métiers
+
