@@ -53,3 +53,35 @@ export const stats = [
       color: "#10B981",
     },
   ];
+
+
+  export const recentActivities = [
+    {
+      id: 1,
+      contribuable: "RAKOTO Jean",
+      action: "Analyse effectuée",
+      statut: "Succès",
+      date: "2026-06-14",
+    },
+    {
+      id: 2,
+      contribuable: "RASOA Marie",
+      action: "Doublon détecté",
+      statut: "Anomalie",
+      date: "2026-06-14",
+    },
+    {
+      id: 3,
+      contribuable: "RAKOTO Andry",
+      action: "Mise à jour fiche",
+      statut: "Succès",
+      date: "2026-06-13",
+    },
+    {
+      id: 4,
+      contribuable: "RANAIVO Lova",
+      action: "Analyse en attente",
+      statut: "En cours",
+      date: "2026-06-13",
+    },
+  ];

@@ -2,7 +2,8 @@ import StatCard from "../components/ui/StatCard";
 import DashboardCard from "../components/ui/DashboardCard";
 import QualityChart from "../components/ui/QualityChart";
 import AnomalyChart from "../components/ui/AnomalyChart";
-import { stats } from "../data/dashboardData";
+import Table from "../components/ui/Table";
+import { recentActivities, stats } from "../data/dashboardData";
 
 export default function Dashboard() {
   return (
@@ -36,6 +37,24 @@ export default function Dashboard() {
         <AnomalyChart />
       </DashboardCard>
     </div>
+    <DashboardCard title="Activités récentes">
+        <Table headers={["Contribuable", "Action", "Statut", "Date"]}>
+          {recentActivities.map((item) => (
+            <tr key={item.id} className="border-t border-[var(--border)]">
+              <td className="p-3">{item.contribuable}</td>
+              <td className="p-3">{item.action}</td>
+              <td className="p-3">
+                <span className={ item.statut === "Succès" ? "text-green-500" : item.statut === "Anomalie" ? "text-red-500": "text-yellow-500"}>
+                  {item.statut}
+                </span>
+              </td>
+              <td className="p-3 text-[var(--text-secondary)]">
+                {item.date}
+              </td>
+            </tr>
+          ))}
+        </Table>
+      </DashboardCard>
     </div>
   );
 }
