@@ -5,6 +5,7 @@ import QualityChart from "../components/ui/QualityChart";
 import AnomalyChart from "../components/ui/AnomalyChart";
 import Table from "../components/ui/Table";
 import Input from "../components/ui/Input";
+import Dropdown from "../components/ui/DropDown";
 import { qualityData, recentActivities, stats } from "../data/dashboardData";
 
 export default function Dashboard() {
@@ -15,43 +16,28 @@ export default function Dashboard() {
   const [qualityRange, setQualityRange] = useState("6m");
   const [statusFilter, setStatusFilter] = useState("all");
   const filteredActivities = recentActivities.filter((item) => {
-    const matchSearch =
-      item.contribuable.toLowerCase().includes(search.toLowerCase());
-  
+    const matchSearch = item.contribuable.toLowerCase().includes(search.toLowerCase());
     const itemDate = new Date(item.date).getTime();
     const start = startDate ? new Date(startDate).getTime() : null;
     const end = endDate ? new Date(endDate).getTime() : null;
-  
     const matchStart = start ? itemDate >= start : true;
     const matchEnd = end ? itemDate <= end : true;
-  
-    const matchStatus =
-      statusFilter === "all" ? true : item.statut === statusFilter;
-  
+    const matchStatus = statusFilter === "all" ? true : item.statut === statusFilter;
     return matchSearch && matchStart && matchEnd && matchStatus;
   });
   const filteredQualityData = qualityData.filter((item) => {
     const itemDate = new Date(item.date);
-
-    const diffMonths =
-      (now.getFullYear() - itemDate.getFullYear()) * 12 +
-      (now.getMonth() - itemDate.getMonth());
-
+    const diffMonths = (now.getFullYear() - itemDate.getFullYear()) * 12 + (now.getMonth() - itemDate.getMonth());
     if (qualityRange === "3m") return diffMonths <= 3;
     if (qualityRange === "6m") return diffMonths <= 6;
     if (qualityRange === "1y") return diffMonths <= 12;
-
     return true;
   });
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-[var(--text-primary)]">
-          Bonjour, Agent Fiscal
-        </h1>
-        <p className="mt-2 text-[var(--text-secondary)]">
-          Voici un aperçu général de la qualité des données.
-        </p>
+        <h1 className="text-3xl font-bold text-[var(--text-primary)]"> Bonjour, Agent Fiscal</h1>
+        <p className="mt-2 text-[var(--text-secondary)]"> Voici un aperçu général de la qualité des données.</p>
       </div>
       <div className=" grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
         {stats.map((stat) => (
@@ -60,16 +46,11 @@ export default function Dashboard() {
       </div>
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <DashboardCard title="Evolution du score qualité" action={
-            <select
-            value={qualityRange}
-            onChange={(e) => setQualityRange(e.target.value)}
-            className="text-sm bg-transparent border border-[var(--border)] rounded-md px-2 py-1"
-          >
-            <option value="3m">3 derniers mois</option>
-            <option value="6m">6 derniers mois</option>
-            <option value="1y">1 an</option>
-          </select>
-          }
+          <Dropdown value={qualityRange} onChange={setQualityRange}
+            options={[  { label: "3 derniers mois", value: "3m" }, 
+                        { label: "6 derniers mois", value: "6m" }, 
+                          { label: "1 an", value: "1y" },]}
+          />}
         >
         <QualityChart data={filteredQualityData} />
         </DashboardCard>
@@ -83,12 +64,14 @@ export default function Dashboard() {
           <Input type="text" placeholder="Rechercher un contribuable..." value={search} onChange={(e) => setSearch(e.target.value)} className="flex-1"/>
           <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="w-full md:w-auto"/>
           <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="w-full md:w-auto"/>
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-3 py-2 text-sm border border-[var(--border)] rounded-md bg-transparent">
-            <option value="all">-- Tous --</option>
-            <option value="Succès">Succès</option>
-            <option value="Anomalie">Anomalie</option>
-            <option value="En cours">En cours</option>
-          </select>
+          <Dropdown value={statusFilter} onChange={setStatusFilter} options={[
+              { label: "Tous les statuts", value: "all" },
+              { label: "Succès", value: "Succès" },
+              { label: "Anomalie", value: "Anomalie" },
+              { label: "En cours", value: "En cours" },
+            ]}
+            className="w-full md:w-auto"
+          />
         </div>
         <Table headers={["Contribuable", "Action", "Statut", "Date"]}>
           {filteredActivities.map((item) => (
