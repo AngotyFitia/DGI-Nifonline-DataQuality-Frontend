@@ -17,7 +17,9 @@ export default function Table({
               ))}
             </tr>
           </thead>
-          <tbody>{children}</tbody>
+            <tbody className="divide-y divide-[var(--border)]">
+            {children}
+            </tbody>
         </table>
       </div>
     );
