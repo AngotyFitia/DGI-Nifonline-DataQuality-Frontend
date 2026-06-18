@@ -5,7 +5,7 @@ import Dropdown from "../../components/ui/DropDown";
 import Table from "../../components/ui/Table";
 import Button from "../../components/ui/Button";
 import { contribuables } from "../../data/contribuablesData";
-import { Eye, Pencil, History,Brain } from "lucide-react";
+import { Eye, Pencil, History,Brain, Download, Trash } from "lucide-react";
 import Modal from "../../components/ui/Modal";
 import Tabs from "../../components/ui/Tabs";
 import ScorePie from "../../components/ui/ScorePie";
@@ -19,6 +19,8 @@ export default function ContribuablesList() {
   const [minScore, setMinScore] = useState("");
   const [maxScore, setMaxScore] = useState("");
   const [selected, setSelectedContribuables] = useState<any | null>(null);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const filteredContribuables = contribuables.filter((c) => {
     const matchSearch = c.nif.toLowerCase().includes(search.toLowerCase()) ||c.nom.toLowerCase().includes(search.toLowerCase());
@@ -91,262 +93,306 @@ export default function ContribuablesList() {
           </div>
         </div>
       </DashboardCard>
-      <Modal open={!!selected} onClose={() => setSelectedContribuables(null)}>
-      {selected && (
-        <div className="space-y-6">
-        <div>
-            <h2 className="text-2xl font-bold"> {selected.nom}</h2>
-            <p className="text-sm text-[var(--text-secondary)]"> NIF: {selected.nif}</p>
-          </div>
-          <Tabs
-            tabs={[
-                {
-                    label: "Aperçu",
-                    content: (
-                      <div className="space-y-6">
-                        <DashboardCard title={""} >
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div>
-                                <p className="text-sm text-[var(--text-secondary)]">NIF</p>
-                                <p className="font-semibold">{selected.nif}</p>
-                                </div>
+        <Modal open={!!selected} onClose={() => setSelectedContribuables(null)}>
+            {selected && (
+                <div className="space-y-6">
+                    <div>
+                        <h2 className="text-2xl font-bold"> {selected.nom}</h2>
+                        <p className="text-sm text-[var(--text-secondary)]"> NIF: {selected.nif}</p>
+                    </div>
+                    <Tabs
+                        tabs={[
+                            {
+                                label: "Aperçu",
+                                content: (
+                                <div className="space-y-6">
+                                    <DashboardCard title={""} >
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                            <div>
+                                            <p className="text-sm text-[var(--text-secondary)]">NIF</p>
+                                            <p className="font-semibold">{selected.nif}</p>
+                                            </div>
 
-                                <div>
-                                <p className="text-sm text-[var(--text-secondary)]">Nom / Raison sociale</p>
-                                <p className="font-semibold">{selected.nom}</p>
-                                </div>
+                                            <div>
+                                            <p className="text-sm text-[var(--text-secondary)]">Nom / Raison sociale</p>
+                                            <p className="font-semibold">{selected.nom}</p>
+                                            </div>
 
-                                <div>
-                                <p className="text-sm text-[var(--text-secondary)]">Centre fiscal</p>
-                                <p className="font-semibold">{selected.centreFiscal}</p>
-                                </div>
+                                            <div>
+                                            <p className="text-sm text-[var(--text-secondary)]">Centre fiscal</p>
+                                            <p className="font-semibold">{selected.centreFiscal}</p>
+                                            </div>
 
-                                <div>
-                                <p className="text-sm text-[var(--text-secondary)]">Statut</p>
-                                <p className="font-semibold">{selected.statut}</p>
-                                </div>
+                                            <div>
+                                            <p className="text-sm text-[var(--text-secondary)]">Statut</p>
+                                            <p className="font-semibold">{selected.statut}</p>
+                                            </div>
 
-                                <div>
-                                <p className="text-sm text-[var(--text-secondary)]">Type</p>
-                                <p className="font-semibold">{selected.type}</p>
-                                </div>
+                                            <div>
+                                            <p className="text-sm text-[var(--text-secondary)]">Type</p>
+                                            <p className="font-semibold">{selected.type}</p>
+                                            </div>
 
-                                <div>
-                                <p className="text-sm text-[var(--text-secondary)]">Date création</p>
-                                <p className="font-semibold">{selected.dateCreation}</p>
-                                </div>
+                                            <div>
+                                            <p className="text-sm text-[var(--text-secondary)]">Date création</p>
+                                            <p className="font-semibold">{selected.dateCreation}</p>
+                                            </div>
 
-                            </div>
-                        </DashboardCard>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <DashboardCard title={""}>
-                            <p className="font-semibold mb-2">Informations clés</p>
-                            <p>Activité : {selected.activite}</p>
-                            <p>Forme juridique : {selected.formeJuridique}</p>
-                            <p>Capital : {selected.capital}</p>
-                            <p>Effectif : {selected.effectif}</p>
-                            <p>Numéro CNaPS : {selected.cnaps}</p>
-                            <p>Numéro STAT : {selected.stat}</p>
-                          </DashboardCard>                  
-                          <DashboardCard title={""}>
-                            <p className="font-semibold mb-2">Coordonnées</p>
-                            <p>Adresse: {selected.contacts.adresse}</p>
-                            <p>Téléphone: {selected.contacts.telephone}</p>
-                            <p>Email: {selected.contacts.email}</p>
-                            <p>Site web: {selected.contacts.site}</p>
-                          </DashboardCard>
-                          
-                        </div>
-                  
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <DashboardCard title={""}>
-                            <p className="font-semibold mb-3">Score de qualité</p>
-                            <div className="flex items-center justify-center">
-                              <ScorePie value={selected.score} />
-                            </div>
-                            <p className="text-center font-bold">{selected.score}%</p>
-                          </DashboardCard>
-                          <DashboardCard title={""}>
-                            <p className="font-semibold mb-3">Résumé des anomalies</p>
-                            <p>Données manquantes : {selected.anomalies.donneesManquantes}</p>
-                            <p>Incohérences : {selected.anomalies.incoherences}</p>
-                            <p>Doublons : {selected.anomalies.doublons}</p>
-                            <p>Autres : {selected.anomalies.autres}</p>
-                          </DashboardCard>
-                        </div>
-                      </div>
-                    )
-                },
-                {
-                    label: "Informations",
-                    content: (
-                      <div className="space-y-6">
-                  
-                        <DashboardCard title={""}>
-                          <div className="flex items-center gap-4">
-                            <img src={selected.image} alt="contribuable" className="w-16 h-16 rounded-full object-cover border border-[var(--border)]"/>
-                            <div>
-                              <p className="text-sm text-[var(--text-secondary)]">Nom / Raison sociale</p>
-                              <p className="font-semibold">{selected.nom}</p>
-                            </div>
-                  
-                          </div>
-                        </DashboardCard>
-                  
-                        <DashboardCard title="Informations principales">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div>
-                                    <p className="text-sm text-[var(--text-secondary)]">NIF</p>
-                                    <p className="font-medium">{selected.nif}</p>
+                                        </div>
+                                    </DashboardCard>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <DashboardCard title={""}>
+                                        <p className="font-semibold mb-2">Informations clés</p>
+                                        <p>Activité : {selected.activite}</p>
+                                        <p>Forme juridique : {selected.formeJuridique}</p>
+                                        <p>Capital : {selected.capital}</p>
+                                        <p>Effectif : {selected.effectif}</p>
+                                        <p>Numéro CNaPS : {selected.cnaps}</p>
+                                        <p>Numéro STAT : {selected.stat}</p>
+                                    </DashboardCard>                  
+                                    <DashboardCard title={""}>
+                                        <p className="font-semibold mb-2">Coordonnées</p>
+                                        <p>Adresse: {selected.contacts.adresse}</p>
+                                        <p>Téléphone: {selected.contacts.telephone}</p>
+                                        <p>Email: {selected.contacts.email}</p>
+                                        <p>Site web: {selected.contacts.site}</p>
+                                    </DashboardCard>
+                                    
+                                    </div>
+                            
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <DashboardCard title={""}>
+                                        <p className="font-semibold mb-3">Score de qualité</p>
+                                        <div className="flex items-center justify-center">
+                                        <ScorePie value={selected.score} />
+                                        </div>
+                                        <p className="text-center font-bold">{selected.score}%</p>
+                                    </DashboardCard>
+                                    <DashboardCard title={""}>
+                                        <p className="font-semibold mb-3">Résumé des anomalies</p>
+                                        <p>Données manquantes : {selected.anomalies.donneesManquantes}</p>
+                                        <p>Incohérences : {selected.anomalies.incoherences}</p>
+                                        <p>Doublons : {selected.anomalies.doublons}</p>
+                                        <p>Autres : {selected.anomalies.autres}</p>
+                                    </DashboardCard>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-sm text-[var(--text-secondary)]">Centre fiscal</p>
-                                    <p className="font-medium">{selected.centreFiscal}</p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-[var(--text-secondary)]">Statut</p>
-                                    <p className="font-medium">{selected.statut}</p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-[var(--text-secondary)]">Date de création</p>
-                                    <p className="font-medium">{selected.dateCreation}</p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-[var(--text-secondary)]">Type</p>
-                                    <p className="font-medium">{selected.type}</p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-[var(--text-secondary)]">Début d’activité</p>
-                                    <p className="font-medium">{selected.debutActivite}</p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-[var(--text-secondary)]">Capital social</p>
-                                    <p className="font-medium">{selected.capital}</p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-[var(--text-secondary)]">CNAPS</p>
-                                    <p className="font-medium">{selected.cnaps}</p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-[var(--text-secondary)]">Effectif</p>
-                                    <p className="font-medium">{selected.effectif}</p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-[var(--text-secondary)]">Num STAT</p>
-                                    <p className="font-medium">{selected.stat}</p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-[var(--text-secondary)]">Forme juridique</p>
-                                    <p className="font-medium">{selected.formeJuridique}</p>
-                                </div>
+                                )
+                            },
+                            {
+                                label: "Informations",
+                                content: (
+                                <div className="space-y-6">
+                            
+                                    <DashboardCard title={""}>
+                                    <div className="flex items-center gap-4">
+                                        <img src={selected.image} alt="contribuable" className="w-16 h-16 rounded-full object-cover border border-[var(--border)]"/>
+                                        <div>
+                                        <p className="text-sm text-[var(--text-secondary)]">Nom / Raison sociale</p>
+                                        <p className="font-semibold">{selected.nom}</p>
+                                        </div>
+                            
+                                    </div>
+                                    </DashboardCard>
+                            
+                                    <DashboardCard title="Informations principales">
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                            <div>
+                                                <p className="text-sm text-[var(--text-secondary)]">NIF</p>
+                                                <p className="font-medium">{selected.nif}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-[var(--text-secondary)]">Centre fiscal</p>
+                                                <p className="font-medium">{selected.centreFiscal}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-[var(--text-secondary)]">Statut</p>
+                                                <p className="font-medium">{selected.statut}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-[var(--text-secondary)]">Date de création</p>
+                                                <p className="font-medium">{selected.dateCreation}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-[var(--text-secondary)]">Type</p>
+                                                <p className="font-medium">{selected.type}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-[var(--text-secondary)]">Début d’activité</p>
+                                                <p className="font-medium">{selected.debutActivite}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-[var(--text-secondary)]">Capital social</p>
+                                                <p className="font-medium">{selected.capital}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-[var(--text-secondary)]">CNAPS</p>
+                                                <p className="font-medium">{selected.cnaps}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-[var(--text-secondary)]">Effectif</p>
+                                                <p className="font-medium">{selected.effectif}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-[var(--text-secondary)]">Num STAT</p>
+                                                <p className="font-medium">{selected.stat}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-[var(--text-secondary)]">Forme juridique</p>
+                                                <p className="font-medium">{selected.formeJuridique}</p>
+                                            </div>
 
-                            </div>
-                        </DashboardCard>
-                      </div>
-                    ),
-                },
-                {
-                    label: "Activités et Fiscalité",
-                    content: (
-                      <div className="space-y-6">
-                        <DashboardCard title="Activité principale">
-                          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                            <div>
-                              <p className="text-sm text-[var(--text-secondary)]">Code</p>
-                              <p className="font-medium">{selected.activitePrincipale.code}</p>
-                            </div>
-                            <div>
-                              <p className="text-sm text-[var(--text-secondary)]">Libellé</p>
-                              <p className="font-medium">{selected.activitePrincipale.libelle}</p>
-                            </div>
-                            <div>
-                              <p className="text-sm text-[var(--text-secondary)]">Catégorie</p>
-                              <p className="font-medium">{selected.activitePrincipale.categorie}</p>
-                            </div>
-                            <div>
-                              <p className="text-sm text-[var(--text-secondary)]">Date début</p>
-                              <p className="font-medium">{selected.activitePrincipale.dateDebut}</p>
-                            </div>
-                          </div>
-                        </DashboardCard>
-                  
-                        <DashboardCard title="Activités secondaires">
-                          <Table headers={[ { label: "Code", align: "left" }, { label: "Libellé", align: "left" }, { label: "Date début", align: "left" }]}>
-                            {selected.activitesSecondaires.map((a: any, index: number) => (
-                              <tr key={index} className="border-t border-[var(--border)]">
-                                <td className="p-3">{a.code}</td>
-                                <td className="p-3">{a.libelle}</td>
-                                <td className="p-3">{a.dateDebut}</td>
-                  
-                              </tr>
-                            ))}
-                          </Table>
-                  
-                        </DashboardCard>
-                      </div>
-                    ),
-                },
-                {
-                    label: "Coordonnées",
-                    content: (
-                      <div className="space-y-6">
-                  
-                        <DashboardCard title="Adresses">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  
-                            <div>
-                              <p className="text-sm text-[var(--text-secondary)]">Adresse principale</p>
-                              <p className="font-medium">{selected.contacts.adresse}</p>
-                            </div>
-                  
-                            <div>
-                              <p className="text-sm text-[var(--text-secondary)]">Adresse secondaire</p>
-                              <p className="font-medium">{selected.contacts.adresseSecondaire}</p>
-                            </div>
-                  
-                            <div>
-                              <p className="text-sm text-[var(--text-secondary)]">Région</p>
-                              <p className="font-medium">{selected.contacts.region}</p>
-                            </div>
-                  
-                            <div>
-                              <p className="text-sm text-[var(--text-secondary)]">Commune</p>
-                              <p className="font-medium">{selected.contacts.commune}</p>
-                            </div>
-                  
-                          </div>
-                        </DashboardCard>
-                  
-                        <DashboardCard title="Coordonnées">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  
-                            <div>
-                              <p className="text-sm text-[var(--text-secondary)]">Téléphone</p>
-                              <p className="font-medium">{selected.contacts.telephone}</p>
-                            </div>
-                  
-                            <div>
-                              <p className="text-sm text-[var(--text-secondary)]">Email</p>
-                              <p className="font-medium">{selected.contacts.email}</p>
-                            </div>
-                  
-                            <div>
-                              <p className="text-sm text-[var(--text-secondary)]">Site web</p>
-                              <p className="font-medium">{selected.contacts.siteWeb}</p>
-                            </div>
-                  
-                          </div>
-                        </DashboardCard>
-                  
-                      </div>
-                    ),
-                }
-            ]}
-          />
-        </div>
-      )}
-    </Modal>
+                                        </div>
+                                    </DashboardCard>
+                                </div>
+                                ),
+                            },
+                            {
+                                label: "Activités et Fiscalité",
+                                content: (
+                                <div className="space-y-6">
+                                    <DashboardCard title="Activité principale">
+                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                        <div>
+                                        <p className="text-sm text-[var(--text-secondary)]">Code</p>
+                                        <p className="font-medium">{selected.activitePrincipale.code}</p>
+                                        </div>
+                                        <div>
+                                        <p className="text-sm text-[var(--text-secondary)]">Libellé</p>
+                                        <p className="font-medium">{selected.activitePrincipale.libelle}</p>
+                                        </div>
+                                        <div>
+                                        <p className="text-sm text-[var(--text-secondary)]">Catégorie</p>
+                                        <p className="font-medium">{selected.activitePrincipale.categorie}</p>
+                                        </div>
+                                        <div>
+                                        <p className="text-sm text-[var(--text-secondary)]">Date début</p>
+                                        <p className="font-medium">{selected.activitePrincipale.dateDebut}</p>
+                                        </div>
+                                    </div>
+                                    </DashboardCard>
+                            
+                                    <DashboardCard title="Activités secondaires">
+                                    <Table headers={[ { label: "Code", align: "left" }, { label: "Libellé", align: "left" }, { label: "Date début", align: "left" }]}>
+                                        {selected.activitesSecondaires.map((a: any, index: number) => (
+                                        <tr key={index} className="border-t border-[var(--border)]">
+                                            <td className="p-3">{a.code}</td>
+                                            <td className="p-3">{a.libelle}</td>
+                                            <td className="p-3">{a.dateDebut}</td>
+                            
+                                        </tr>
+                                        ))}
+                                    </Table>
+                            
+                                    </DashboardCard>
+                                </div>
+                                ),
+                            },
+                            {
+                                label: "Coordonnées",
+                                content: (
+                                <div className="space-y-6">
+                            
+                                    <DashboardCard title="Adresses">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            
+                                        <div>
+                                        <p className="text-sm text-[var(--text-secondary)]">Adresse principale</p>
+                                        <p className="font-medium">{selected.contacts.adresse}</p>
+                                        </div>
+                            
+                                        <div>
+                                        <p className="text-sm text-[var(--text-secondary)]">Adresse secondaire</p>
+                                        <p className="font-medium">{selected.contacts.adresseSecondaire}</p>
+                                        </div>
+                            
+                                        <div>
+                                        <p className="text-sm text-[var(--text-secondary)]">Région</p>
+                                        <p className="font-medium">{selected.contacts.region}</p>
+                                        </div>
+                            
+                                        <div>
+                                        <p className="text-sm text-[var(--text-secondary)]">Commune</p>
+                                        <p className="font-medium">{selected.contacts.commune}</p>
+                                        </div>
+                            
+                                    </div>
+                                    </DashboardCard>
+                            
+                                    <DashboardCard title="Coordonnées">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            
+                                        <div>
+                                        <p className="text-sm text-[var(--text-secondary)]">Téléphone</p>
+                                        <p className="font-medium">{selected.contacts.telephone}</p>
+                                        </div>
+                            
+                                        <div>
+                                        <p className="text-sm text-[var(--text-secondary)]">Email</p>
+                                        <p className="font-medium">{selected.contacts.email}</p>
+                                        </div>
+                            
+                                        <div>
+                                        <p className="text-sm text-[var(--text-secondary)]">Site web</p>
+                                        <p className="font-medium">{selected.contacts.siteWeb}</p>
+                                        </div>
+                            
+                                    </div>
+                                    </DashboardCard>
+                            
+                                </div>
+                                ),
+                            },
+                            {
+                                label: "Documents",
+                                content: (
+                                <div className="space-y-6">
+                                    <DashboardCard title="">
+                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                                        <Input placeholder="Recherche par nom..." value={search} onChange={(e) => setSearch(e.target.value)}/>
+                                        <Dropdown value={type} onChange={setType} options={[ { label: "Tous les types", value: "" }, { label: "Statuts", value: "Statuts" }, { label: "Fiche d’identité", value: "Fiche d’identité" },]}/>
+                                        <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}/>
+                                        <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)}/>
+                                    </div>
+                            
+                                    <div className="flex justify-end mt-4">
+                                        <Button variant="secondary">Filtrer</Button>
+                                    </div>
+                                    </DashboardCard>
+                            
+                                    <DashboardCard title="">
+                                    <Table  headers={[ { label: "Nom", align: "left" }, { label: "Type", align: "left" }, { label: "Date", align: "left" }, { label: "Taille", align: "left" }, { label: "Actions", align: "center" }, ]}>
+                                        {selected.documents
+                                        ?.filter((doc: any) =>
+                                            doc.nom.toLowerCase().includes(search.toLowerCase())
+                                        )
+                                        .map((doc: any, index: number) => (
+                                            <tr key={index} className="border-t border-[var(--border)]">
+                            
+                                            <td className="p-3">{doc.nom}</td>
+                                            <td className="p-3">{doc.type}</td>
+                                            <td className="p-3">{doc.date}</td>
+                                            <td className="p-3">{doc.taille}</td>
+                            
+                                            <td className="p-3">
+                                                <div className="flex gap-2 justify-center">
+                                                <Button variant="primary" className="px-2 py-1 text-sm"><Download size={16}/></Button>
+                                                <Button variant="secondary" className="px-2 py-1 text-sm"><Eye size={16}/></Button>
+                                                <Button variant="danger" className="px-2 py-1 text-sm"><Trash size={16}/></Button>
+                                                </div>
+                                            </td>
+                                            </tr>
+                                        ))}
+                                    </Table>
+                                    </DashboardCard>
+                                </div>
+                                ),
+                            }
+                        ]}
+                    />
+                </div>
+            )}
+        </Modal>
     </div>
-    
   );
 }

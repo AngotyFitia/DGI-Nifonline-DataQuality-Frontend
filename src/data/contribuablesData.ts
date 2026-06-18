@@ -55,6 +55,21 @@ export const contribuables = [
         doublons: 1,
         autres: 1,
       },
+
+      documents: [
+        {
+          nom: "Résultats.csv",
+          type: "Statuts",
+          date: "22/05/2016",
+          taille: "100 Mo",
+        },
+        {
+          nom: "Authentification.pdf",
+          type: "Fiche d’identité",
+          date: "22/06/2016",
+          taille: "47 Mo",
+        },
+      ],
     },
   
     {
@@ -107,6 +122,20 @@ export const contribuables = [
         doublons: 0,
         autres: 0,
       },
+      documents: [
+        {
+          nom: "Résultats.csv",
+          type: "Statuts",
+          date: "22/05/2016",
+          taille: "100 Mo",
+        },
+        {
+          nom: "Authentification.pdf",
+          type: "Fiche d’identité",
+          date: "22/06/2016",
+          taille: "47 Mo",
+        },
+      ],
     },
   
     {
@@ -159,6 +188,20 @@ export const contribuables = [
         doublons: 0,
         autres: 1,
       },
+      documents: [
+        {
+          nom: "Résultats.csv",
+          type: "Statuts",
+          date: "22/05/2016",
+          taille: "100 Mo",
+        },
+        {
+          nom: "Authentification.pdf",
+          type: "Fiche d’identité",
+          date: "22/06/2016",
+          taille: "47 Mo",
+        },
+      ],
     },
   
     {
@@ -211,6 +254,20 @@ export const contribuables = [
         doublons: 0,
         autres: 0,
       },
+      documents: [
+        {
+          nom: "Résultats.csv",
+          type: "Statuts",
+          date: "22/05/2016",
+          taille: "100 Mo",
+        },
+        {
+          nom: "Authentification.pdf",
+          type: "Fiche d’identité",
+          date: "22/06/2016",
+          taille: "47 Mo",
+        },
+      ],
     },
   
     {
@@ -264,5 +321,20 @@ export const contribuables = [
         doublons: 0,
         autres: 0,
       },
+      documents: [
+        {
+          nom: "Résultats.csv",
+          type: "Statuts",
+          date: "22/05/2016",
+          taille: "100 Mo",
+        },
+        {
+          nom: "Authentification.pdf",
+          type: "Fiche d’identité",
+          date: "22/06/2016",
+          taille: "47 Mo",
+        },
+      ],
     },
+    
   ];
