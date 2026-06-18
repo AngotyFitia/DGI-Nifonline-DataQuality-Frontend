@@ -5,6 +5,7 @@ import Dropdown from "../../components/ui/DropDown";
 import Table from "../../components/ui/Table";
 import Button from "../../components/ui/Button";
 import { contribuables } from "../../data/contribuablesData";
+import { Eye, Pencil, History,Brain } from "lucide-react";
 
 export default function ContribuablesList() {
   const [search, setSearch] = useState("");
@@ -55,24 +56,22 @@ export default function ContribuablesList() {
         <Table headers={[ "NIF", "Nom société", "Type", "Activité", "Centre fiscal", "Score", "Statut", "Actions"]}>
           {filteredContribuables.map((c) => (
             <tr key={c.nif} className="border-t border-[var(--border)]">
-              <td className="p-3">{c.nif}</td>
-              <td className="p-3">{c.nom}</td>
-              <td className="p-3">{c.type}</td>
-              <td className="p-3">{c.activite}</td>
-              <td className="p-3">{c.centreFiscal}</td>
-              <td className="p-3">{c.score}%</td>
+                <td className="p-3">{c.nif}</td>
+                <td className="p-3">{c.nom}</td>
+                <td className="p-3">{c.type}</td>
+                <td className="p-3">{c.activite}</td>
+                <td className="p-3">{c.centreFiscal}</td>
+                <td className="p-3">{c.score}%</td>
 
-              <td className="p-3">
-                <span className={ c.statut === "Validé" ? "text-green-500" : c.statut === "À vérifier" ? "text-orange-500" : "text-red-500" }> {c.statut}</span>
-              </td>
-
-              <td className="p-3">
-                <div className="flex gap-2 text-sm">
-                  <button className="hover:underline"> Voir </button>
-                  <button className="hover:underline"> Modifier</button>
-                  <button className="hover:underline"> Historique</button>
-                </div>
-              </td>
+                <td className="p-3"> <span className={ c.statut === "Validé" ? "text-green-500" : c.statut === "À vérifier" ? "text-orange-500" : "text-red-500" }> {c.statut}</span></td>
+                <td className="p-3">
+                    <div className="flex gap-2">
+                        <Button variant="secondary" className="px-2 py-2"> <Eye size={16} /></Button>
+                        <Button variant="alert" className="px-2 py-2"> <Pencil size={16} /></Button>
+                        <Button variant="primary" className="px-2 py-2"> <Brain size={16} /></Button>
+                        <Button variant="secondary" className="px-2 py-2"><History size={16} /></Button>
+                    </div>
+                </td>
             </tr>
           ))}
         </Table>
