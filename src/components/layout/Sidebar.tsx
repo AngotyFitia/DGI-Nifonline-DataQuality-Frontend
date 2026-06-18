@@ -8,15 +8,15 @@ type NavItem = {
   label: string;
   icon: React.ElementType;
   to: string;
+  
 };
-
 const mainNav: NavItem[] = [
-  { id: "stat", label: "Tableau de bord", icon: LayoutDashboard, to: "/stat" },
-  { id: "contribuables", label: "Contribuables", icon: Users, to: "/contribuables" },
-  { id: "analyses", label: "Analyses IA", icon: Brain, to: "/analyses" },
-  { id: "doublons", label: "Doublons", icon: Copy, to: "/doublons" },
-  { id: "recommandations", label: "Recommandations", icon: Lightbulb, to: "/recommandations" },
-  { id: "rapports", label: "Rapports", icon: FileText, to: "/rapports" },
+  { id: "stat", label: "Tableau de bord", icon: LayoutDashboard, to: "/welcome/stat" },
+  { id: "contribuables", label: "Contribuables", icon: Users, to: "/welcome/contribuables" },
+  { id: "analyses", label: "Analyses IA", icon: Brain, to: "/welcome/analyses" },
+  { id: "doublons", label: "Doublons", icon: Copy, to: "/welcome/doublons" },
+  { id: "recommandations", label: "Recommandations", icon: Lightbulb, to: "/welcome/recommandations" },
+  { id: "rapports", label: "Rapports", icon: FileText, to: "/welcome/rapports" },
 ];
 
 const secondaryNav: NavItem[] = [

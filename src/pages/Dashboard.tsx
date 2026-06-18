@@ -73,7 +73,7 @@ export default function Dashboard() {
             className="w-full md:w-auto"
           />
         </div>
-        <Table headers={["Contribuable", "Action", "Statut", "Date"]}>
+        <Table headers={[{label:"Contribuable", align:"left"}, {label: "Action", align: "left"}, {label: "Statut", align: "left"}, {label: "Date", align: "left"}]}>
           {filteredActivities.map((item) => (
             <tr key={item.id} className="border-t border-[var(--border)]">
               <td className="p-3">{item.contribuable}</td>

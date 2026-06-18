@@ -1,26 +1,27 @@
 export default function Table({
-    headers,
-    children,
-  }: {
-    headers: string[];
-    children: React.ReactNode;
-  }) {
-    return (
-      <div className="overflow-x-auto">
-        <table className="w-full border border-[var(--border)]">
-          <thead className="bg-white/5">
-            <tr>
-              {headers.map((h) => (
-                <th key={h} className="text-left p-3 text-sm">
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-            <tbody className="divide-y divide-[var(--border)]">
-            {children}
-            </tbody>
-        </table>
-      </div>
-    );
-  }
+  headers,
+  children,
+}: {
+  headers: { label: string; align?: "left" | "center" | "right" }[];
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="w-full overflow-x-auto">
+      <table className="min-w-[900px] w-full border border-[var(--border)] table-auto">
+        <thead className="bg-[var(--surface)]">
+          <tr>
+            {headers.map((h) => (
+              <th key={h.label} className={`text-sm p-3 whitespace-nowrap ${ h.align === "center" ? "text-center" : h.align === "right" ? "text-right" : "text-left" }`}>
+                {h.label}
+              </th>
+            ))}
+          </tr>
+        </thead>
+
+        <tbody className="divide-y divide-[var(--border)]">
+          {children}
+        </tbody>
+      </table>
+    </div>
+  );
+}

@@ -43,7 +43,7 @@ export default function DesignSystemPlayground() {
 
       <Card>
         <h2 className="mb-2 font-semibold">Table</h2>
-        <Table headers={["Nom", "Statut", "Montant"]}>
+        <Table headers={[{label: "Nom", align: "left"}, {label: "Statut", align: "left"}, {label: "Montant", align: "left"}]}>
           <tr className="border-t border-[var(--border)]">
             <td className="p-3">Entreprise A</td>
             <td className="p-3">Actif</td>
