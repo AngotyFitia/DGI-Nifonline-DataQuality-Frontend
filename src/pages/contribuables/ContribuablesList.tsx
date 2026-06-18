@@ -170,10 +170,10 @@ export default function ContribuablesList() {
                                     </DashboardCard>
                                     <DashboardCard title={""}>
                                         <p className="font-semibold mb-3">Résumé des anomalies</p>
-                                        <p>Données manquantes : {selected.anomalies.donneesManquantes}</p>
-                                        <p>Incohérences : {selected.anomalies.incoherences}</p>
-                                        <p>Doublons : {selected.anomalies.doublons}</p>
-                                        <p>Autres : {selected.anomalies.autres}</p>
+                                        <p>Données manquantes : {selected.analyseIA.anomalies.donneesManquantes}</p>
+                                        <p>Incohérences : {selected.analyseIA.anomalies.incoherences}</p>
+                                        <p>Doublons : {selected.analyseIA.anomalies.doublons}</p>
+                                        <p>Autres : {selected.analyseIA.anomalies.autres}</p>
                                     </DashboardCard>
                                     </div>
                                 </div>
@@ -368,24 +368,79 @@ export default function ContribuablesList() {
                                         )
                                         .map((doc: any, index: number) => (
                                             <tr key={index} className="border-t border-[var(--border)]">
-                            
-                                            <td className="p-3">{doc.nom}</td>
-                                            <td className="p-3">{doc.type}</td>
-                                            <td className="p-3">{doc.date}</td>
-                                            <td className="p-3">{doc.taille}</td>
-                            
-                                            <td className="p-3">
-                                                <div className="flex gap-2 justify-center">
-                                                <Button variant="primary" className="px-2 py-1 text-sm"><Download size={16}/></Button>
-                                                <Button variant="secondary" className="px-2 py-1 text-sm"><Eye size={16}/></Button>
-                                                <Button variant="danger" className="px-2 py-1 text-sm"><Trash size={16}/></Button>
-                                                </div>
-                                            </td>
+                                                <td className="p-3">{doc.nom}</td>
+                                                <td className="p-3">{doc.type}</td>
+                                                <td className="p-3">{doc.date}</td>
+                                                <td className="p-3">{doc.taille}</td>
+                                                <td className="p-3">
+                                                    <div className="flex gap-2 justify-center">
+                                                    <Button variant="primary" className="px-2 py-1 text-sm"><Download size={16}/></Button>
+                                                    <Button variant="secondary" className="px-2 py-1 text-sm"><Eye size={16}/></Button>
+                                                    <Button variant="danger" className="px-2 py-1 text-sm"><Trash size={16}/></Button>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         ))}
                                     </Table>
                                     </DashboardCard>
                                 </div>
+                                ),
+                            },
+                            {
+                                label: "Analyse IA",
+                                content: (
+                                  <div className="space-y-6">
+                                    <DashboardCard title="Analyse IA">
+                                        <div className="flex justify-between items-start">
+                                            <div>
+                                                <p className="text-sm text-[var(--text-secondary)]">Dernière analyse</p>
+                                                <p className="font-semibold text-[var(--text-primary)]">{selected.date}</p>
+                                                <span className={` inline-block mt-2 px-2 py-1 rounded-full text-xs font-medium ${selected.analyseIA.dernierScore >= 85 ? "bg-green-100 text-green-700" : selected.analyseIA.dernierScore >= 70 ? "bg-yellow-100 text-yellow-700" : "bg-red-100 text-red-700" } `}>
+                                                    {selected.analyseIA.dernierScore >= 85 ? "Données fiables" : selected.analyseIA.dernierScore >= 70 ? "À vérifier": "Critique"}
+                                                </span>
+                                            </div>
+
+                                            <div className="text-right">
+                                                <p className="text-sm text-[var(--text-secondary)]">Score qualité</p>
+                                                <p className={` text-3xl font-bold ${selected.score >= 85 ? "text-green-600" : selected.score >= 70 ? "text-yellow-600" : "text-red-600"}`}>{selected.score}%</p>
+                                            </div>
+
+                                        </div>
+                                    </DashboardCard>
+                              
+                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                        <DashboardCard title="Score IA">
+                                            <p className={` text-2xl font-bold ${selected.analyseIA.dernierScore >= 85 ? "text-green-600" : selected.analyseIA.dernierScore >= 70 ? "text-yellow-600": "text-red-600" }`}> {selected.analyseIA.dernierScore}%</p>
+                                        </DashboardCard>
+
+                                        <DashboardCard title="Données manquantes">
+                                            <p className={` text-2xl font-bold ${selected.analyseIA.anomalies.donneesManquantes === 0 ? "text-green-600" : selected.analyseIA.anomalies.donneesManquantes <= 2 ? "text-yellow-600" : "text-red-600"}`}>{selected.analyseIA.anomalies.donneesManquantes}</p>
+                                        </DashboardCard>
+
+                                        <DashboardCard title="Incohérences">
+                                            <p className={`text-2xl font-bold${selected.analyseIA.anomalies.incoherences === 0 ? "text-green-600"  : selected.analyseIA.anomalies.incoherences <= 1 ? "text-yellow-600" : "text-red-600"}`}>{selected.analyseIA.anomalies.incoherences}</p>
+                                        </DashboardCard>
+
+                                        <DashboardCard title="Doublons">
+                                            <p className={` text-2xl font-bold ${selected.analyseIA.anomalies.doublons === 0 ? "text-green-600" : "text-red-600"}`}> {selected.analyseIA.anomalies.doublons}</p>
+                                        </DashboardCard>
+                                    </div>
+                                    <DashboardCard title="Recommandation générale">
+                                      <div className="space-y-3">
+                                        <p className="text-[var(--text-secondary)]">
+                                          {selected.analyseIA.resume}
+                                        </p>
+                                        <ul className="list-disc pl-5 space-y-1 text-sm">
+                                          {selected.analyseIA.recommandations.map((r: string, i: number) => (
+                                            <li key={i}>{r}</li>
+                                          ))}
+                                        </ul>
+                                        <Button variant="primary">
+                                          Voir les recommandations détaillées
+                                        </Button>
+                                      </div>
+                                    </DashboardCard>
+                                  </div>
                                 ),
                             }
                         ]}

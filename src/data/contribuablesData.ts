@@ -49,11 +49,21 @@ export const contribuables = [
         },
       ],
   
-      anomalies: {
-        donneesManquantes: 2,
-        incoherences: 1,
-        doublons: 1,
-        autres: 1,
+      analyseIA: {
+        niveau: "Moyen",
+        dernierScore: 72,
+        anomalies: {
+          donneesManquantes: 3,
+          incoherences: 2,
+          doublons: 1,
+        },
+        resume: "Données partiellement complètes avec incohérences mineures détectées.",
+        recommandations: [
+          "Compléter les informations manquantes sur les activités secondaires",
+          "Vérifier la cohérence entre activité déclarée et code NIF",
+          "Fusionner les doublons potentiels d’adresses",
+        ],
+        date: "18/06/2026"
       },
 
       documents: [
@@ -116,11 +126,20 @@ export const contribuables = [
         },
       ],
   
-      anomalies: {
-        donneesManquantes: 0,
-        incoherences: 0,
-        doublons: 0,
-        autres: 0,
+      analyseIA: {
+        niveau: "Bon",
+        dernierScore: 88,
+        anomalies: {
+          donneesManquantes: 0,
+          incoherences: 0,
+          doublons: 0,
+        },
+        resume: "Fiche propre avec données cohérentes et complètes.",
+        recommandations: [
+          "Maintenir la qualité actuelle des données",
+          "Ajouter des indicateurs financiers pour enrichir le profil",
+        ],
+        date: "18/06/2026"
       },
       documents: [
         {
@@ -182,11 +201,22 @@ export const contribuables = [
         },
       ],
   
-      anomalies: {
-        donneesManquantes: 3,
-        incoherences: 2,
-        doublons: 0,
-        autres: 1,
+      analyseIA: {
+        niveau: "Faible",
+        dernierScore: 64,
+        anomalies: {
+          donneesManquantes: 4,
+          incoherences: 3,
+          doublons: 0,
+        },
+        resume: "Plusieurs incohérences et données critiques manquantes.",
+        recommandations: [
+          "Corriger les incohérences sur les activités agricoles",
+          "Compléter les informations fiscales manquantes",
+          "Vérifier la date de début d’activité principale",
+          "Mettre à jour les coordonnées légales",
+        ],
+        date: "18/06/2026"
       },
       documents: [
         {
@@ -248,11 +278,19 @@ export const contribuables = [
         },
       ],
   
-      anomalies: {
-        donneesManquantes: 1,
-        incoherences: 1,
-        doublons: 0,
-        autres: 0,
+      analyseIA: {
+        niveau: "Moyen",
+        dernierScore: 79,
+        anomalies: {
+          donneesManquantes: 2,
+          incoherences: 1,
+          doublons: 0,
+        },
+        resume: "Données globalement correctes mais quelques incohérences mineures.",
+        recommandations: [
+          "Vérifier les données logistiques déclarées",
+          "Compléter les informations sur les entrepôts",
+        ],
       },
       documents: [
         {
@@ -315,11 +353,20 @@ export const contribuables = [
         },
       ],
   
-      anomalies: {
-        donneesManquantes: 0,
-        incoherences: 0,
-        doublons: 0,
-        autres: 0,
+      analyseIA: {
+        niveau: "Bon",
+        dernierScore: 91,
+        anomalies: {
+          donneesManquantes: 0,
+          incoherences: 0,
+          doublons: 0,
+        },
+        resume: "Données fiables avec bonne conformité réglementaire.",
+        recommandations: [
+          "Surveiller la conformité énergétique",
+          "Mettre à jour régulièrement les données fiscales",
+        ],
+        date: "18/06/2026"
       },
       documents: [
         {
