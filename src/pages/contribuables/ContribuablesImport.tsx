@@ -1,64 +1,138 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import DashboardCard from "../../components/ui/DashboardCard";
 import Button from "../../components/ui/Button";
 import { Upload } from "lucide-react";
 import Alert from "../../components/ui/Alert";
 import Toast from "../../components/ui/Toast";
 
+type ImportFiles = {
+  identity?: File | null;
+  activities?: File | null;
+  fiscality?: File | null;
+  contacts?: File | null;
+  documents?: File | null;
+};
+
 export default function ContribuablesImport() {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [file, setFile] = useState<File | null>(null);
-
+  const [files, setFiles] = useState<ImportFiles>({});
   const [toast, setToast] = useState(false);
+  const [step, setStep] = useState<number>(1);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: keyof ImportFiles
+  ) => {
     if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
+      setFiles({
+        ...files,
+        [type]: e.target.files[0],
+      });
     }
   };
 
-  const handleClick = () => { fileInputRef.current?.click();};
+  const handleImport = () => {
+    setToast(true);
+  };
+
   return (
     <div className="space-y-6">
-
       {toast && (
-        <Toast type="success" message="Import simulé avec succès" onClose={() => setToast(false)}/>
+        <Toast type="success" message="Import des données terminé avec succès" onClose={() => setToast(false)}/>
       )}
 
-      <DashboardCard title="Import des contribuables">
+      <DashboardCard title="Import multi-sources des contribuables">
         <div className="space-y-6">
-          <div onClick={handleClick} className="border-2 border-dashed border-[var(--border)] rounded-xl p-10 text-center cursor-pointer bg-[var(--surface)] hover:bg-[var(--surface-hover)] transition">
-            <input ref={fileInputRef} type="file" accept=".csv,.xlsx" className="hidden" onChange={handleFileChange}/>
-            <div className="flex flex-col items-center gap-3">
-              <Upload size={40} className="text-[var(--text-secondary)]" />
-                <p className="text-[var(--text-primary)] font-medium"> Glissez-déposez votre fichier ici</p>
-                <p className="text-sm text-[var(--text-secondary)]">ou cliquez pour sélectionner un fichier</p>
-                <p className="text-xs text-[var(--text-secondary)]">Formats acceptés : CSV, XLSX</p>
-            </div>
+          <div className="flex gap-2 text-sm">
+            {["Identité", "Activités", "Fiscalité", "Contacts", "Documents"].map(
+              (label, i) => (
+                <button key={i} onClick={() => setStep(i + 1)} className={`px-3 py-1 rounded ${ step === i + 1 ? "bg-blue-600 text-white" : "bg-[var(--surface)]"}`}> {label}</button>
+              )
+            )}
           </div>
 
-          {file && (
-            <div className="p-4 rounded-lg border border-[var(--border)] bg-[var(--surface)]">
-              <p className="text-sm text-[var(--text-primary)]"> Fichier sélectionné : <strong>{file.name}</strong></p>
-            </div>
-          )}
+          <div className="border-2 border-dashed border-[var(--border)] rounded-xl p-10 text-center bg-[var(--surface)]">
+            {step === 1 && (
+              <div className="flex flex-col items-center gap-3">
+                <Upload size={40} />
+                <p>Importer fichier IDENTITÉ</p>
+                <label htmlFor="identity-upload">
+                  <Button variant="secondary"> Choisir un fichier</Button>
+                </label>
+                <input id="identity-upload" type="file" accept=".csv,.xlsx" className="hidden" onChange={(e) => handleFileChange(e, "identity")}/>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className="flex flex-col items-center gap-3">
+                <Upload size={40} />
+                <p>Importer fichier ACTIVITÉS</p>
+                <label htmlFor="activities-upload">
+                  <Button variant="secondary"> Choisir un fichier</Button>
+                </label>
+                <input id="activities-upload" type="file" accept=".csv,.xlsx" className="hidden" onChange={(e) => handleFileChange(e, "activities")} />
+              </div>
+            )}
+
+            {step === 3 && (
+              <div className="flex flex-col items-center gap-3">
+                <Upload size={40} />
+                <p>Importer fichier FISCALITÉ</p>
+                <label htmlFor="fiscality-upload">
+                  <Button variant="secondary"> Choisir un fichier</Button>
+                </label>
+                <input  id="fiscality-upload" type="file" accept=".csv,.xlsx" className="hidden" onChange={(e) => handleFileChange(e, "fiscality")}/>
+              </div>
+            )}
+
+            {step === 4 && (
+              <div className="flex flex-col items-center gap-3">
+                <Upload size={40} />
+                <p>Importer fichier CONTACTS</p>
+                <label htmlFor="contacts-upload">
+                  <Button variant="secondary"> Choisir un fichier</Button>
+                </label>
+                <input id="contacts-upload" type="file" accept=".csv,.xlsx" className="hidden" onChange={(e) => handleFileChange(e, "contacts")} />
+              </div>
+            )}
+
+            {step === 5 && (
+              <div className="flex flex-col items-center gap-3">
+                <Upload size={40} />
+                <p>Importer fichiers DOCUMENTS</p>
+
+                <label htmlFor="documents-upload">
+                  <Button variant="secondary">Choisir un fichier</Button>
+                </label>
+                <input id="documents-upload" type="file" accept=".csv,.pdf,.xlsx" className="hidden"onChange={(e) => handleFileChange(e, "documents")}/>
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-2 text-sm">
+            {Object.entries(files).map(([key, file]) =>
+              file ? (
+                <p key={key}>
+                  ✔ {key} : <strong>{file.name}</strong>
+                </p>
+              ) : (
+                <p key={key} className="text-gray-400">
+                  ✖ {key} : non importé
+                </p>
+              )
+            )}
+          </div>
 
           <div className="flex justify-end gap-3">
-            <Button variant="cancel">Annuler</Button>
-            <Button variant="primary" onClick={() => setToast(true)} disabled={!file}>Importer</Button>
+            <Button variant="secondary">Annuler</Button>
+            <Button variant="primary" onClick={handleImport} disabled={!files.identity}>Importer tout</Button>
           </div>
         </div>
       </DashboardCard>
 
-      <DashboardCard title="Test des messages système">
-        <div className="space-y-3">
-          <Alert type="success" message="Import terminé avec succès" />
-          <Alert type="warning" message="Attention : certaines lignes contiennent des anomalies" />
-          <Alert type="error" message="Erreur : fichier invalide" />
-          <Alert type="info" message="Info : format CSV recommandé pour de meilleures performances" />
-        </div>
+      <DashboardCard title="Informations système">
+        <Alert type="info" message="Chaque contribuable peut être importé par plusieurs fichiers séparés"/>
+        <Alert type="warning" message="Les données sont liées via le NIF"/>
       </DashboardCard>
-
     </div>
   );
 }
