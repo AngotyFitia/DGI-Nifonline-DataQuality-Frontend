@@ -99,7 +99,6 @@ Ce document retrace l'évolution du projet DGI et les principales contributions 
 ## PR #6 - Module Analyse IA et gestion des doublons
 
 - Description :
-
   - Création de la page **Analyse IA** avec affichage des résultats d’analyse des contribuables
   - Mise en place d’un tableau des analyses avec scores, statuts et actions (voir, analyser, archiver, supprimer)
   - Intégration des donnée basées sur `contribuablesData` et `doublonsData`
@@ -107,5 +106,13 @@ Ce document retrace l'évolution du projet DGI et les principales contributions 
   - Ajout de la détection et affichage des doublons dans le système d’analyse IA
   - Utilisation des composants existants (`DashboardCard`, `Table`, `Modal`, `Tabs`, `Button`) pour assurer la cohérence UI
 
-- Lien :
-  https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/6
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/6
+
+---
+
+## PR #7 - Import multi-fichiers des contribuables
+
+- Description :
+  - Ajout de la gestion indépendante des modules : identité, activités, fiscalité, contacts et documents
+
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/7
