@@ -18,8 +18,7 @@ Ce document retrace l'évolution du projet DGI et les principales contributions 
   - Harmonisation du style global
   - Préparation du design system pour les futurs modules de l'application
 
-- Lien :
-  https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/1
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/1
 
 ---
 
@@ -33,8 +32,7 @@ Ce document retrace l'évolution du projet DGI et les principales contributions 
   - Ajout du bouton de changement de thème
   - Optimisation responsive mobile / desktop
 
-- Lien :
-  https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/2
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/2
 
 ## PR #3 - Correction des problèmes de déploiement (Vercel)
 
@@ -44,8 +42,7 @@ Ce document retrace l'évolution du projet DGI et les principales contributions 
   - Correction du chargement du favicon manquant (favicon.ico)
   - Amélioration de la stabilité du déploiement frontend
 
-- Lien :
-  https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/3
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/3
 
 ---
 
@@ -54,8 +51,7 @@ Ce document retrace l'évolution du projet DGI et les principales contributions 
 - Description :
   - Mise en place du Dashboard principal de l’application UI uniquement
 
-- Lien :
-  https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/4
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/4
 
 ---
 
@@ -95,5 +91,21 @@ Ce document retrace l'évolution du projet DGI et les principales contributions 
     - Configuration de la redirection automatique vers la page de connexion au lancement de l'application
     - Correction de la structure des routes React Router
 
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/5
+
+---
+
+
+## PR #6 - Module Analyse IA et gestion des doublons
+
+- Description :
+
+  - Création de la page **Analyse IA** avec affichage des résultats d’analyse des contribuables
+  - Mise en place d’un tableau des analyses avec scores, statuts et actions (voir, analyser, archiver, supprimer)
+  - Intégration des donnée basées sur `contribuablesData` et `doublonsData`
+  - Centralisation des données dans `analysesIAData.ts` avec calcul automatique des scores et anomalies
+  - Ajout de la détection et affichage des doublons dans le système d’analyse IA
+  - Utilisation des composants existants (`DashboardCard`, `Table`, `Modal`, `Tabs`, `Button`) pour assurer la cohérence UI
+
 - Lien :
-  https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/5
+  https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/6
