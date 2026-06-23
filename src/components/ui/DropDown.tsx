@@ -20,14 +20,9 @@ export default function Dropdown({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className={`
-        px-3 py-2 text-sm rounded-md
-        border border-[var(--border)]
-        bg-[var(--surface)]
-        text-[var(--text-primary)]
-        outline-none
-        focus:border-blue-500
-        transition
+      className={`w-full px-3 py-2 text-sm rounded-md border border-[var(--border)] bg-[var(--bg-secondary)] text-[var(--text-primary)] font-[Montserrat]
+                  outline-none transition-all duration-200 focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20
+                  hover:border-[var(--primary)] appearance-none cursor-pointer
         ${className}
       `}
     >
