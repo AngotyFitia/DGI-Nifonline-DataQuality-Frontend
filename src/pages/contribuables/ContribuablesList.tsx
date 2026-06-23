@@ -8,6 +8,7 @@ import { contribuables } from "../../data/contribuablesData";
 import { Eye, Pencil, History,Brain } from "lucide-react";
 import Modal from "../../components/ui/Modal";
 import ContribuableTabs from "../../components/contribuables/ContribuableTabs";
+import Pagination from "../../components/ui/Pagination";
 
 export default function ContribuablesList() {
   const [search, setSearch] = useState("");
@@ -84,9 +85,7 @@ export default function ContribuablesList() {
         <div className="mt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-[var(--text-secondary)]"> Affichage de 1 à {filteredContribuables.length} sur 50 000 résultats</p>
           <div className="flex gap-2">
-            <button className="w-8 h-8 rounded bg-blue-600 text-white"> 1 </button>
-            <button className="w-8 h-8 rounded border border-[var(--border)]"> 2 </button>
-            <button className="w-8 h-8 rounded border border-[var(--border)]"> 3</button>
+                <Pagination />
           </div>
         </div>
       </DashboardCard>
