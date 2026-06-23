@@ -116,3 +116,14 @@ Ce document retrace l'évolution du projet DGI et les principales contributions 
   - Ajout de la gestion indépendante des modules : identité, activités, fiscalité, contacts et documents
 
 - Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/7
+
+---
+
+## PR #8 - Refactor UI globale + alignement chart graphique DGI
+
+- Description: 
+  - Refactorisation complet de l’interface utilisateur pour alignement avec la charte graphique DGI
+  - Mise à jour des composants UI principaux pour une cohérence globale du design system
+  - Amélioration de l’accessibilité visuelle en mode clair et sombre
+  
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/8
