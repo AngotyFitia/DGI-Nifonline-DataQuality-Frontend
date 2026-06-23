@@ -76,7 +76,7 @@ export default function DesignSystemPlayground() {
 
       <Card>
         <h2 className="mb-2 font-semibold">Empty State</h2>
-        <EmptyState title="Aucune donnée disponible" />
+        <EmptyState title="Aucune donnée disponible" children={""} />
       </Card>
 
       <Card>
