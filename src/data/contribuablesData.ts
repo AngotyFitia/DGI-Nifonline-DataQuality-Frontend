@@ -16,7 +16,7 @@ export const contribuables = [
         commune: "Ambohimanarina",
         telephone: "034 11 569 02",
         email: "contact@mada-trading.mg",
-        site: "www.madatrading.mg",
+        siteWeb: "www.madatrading.mg",
       },
       
       cnaps: "CNAPS 12456",
@@ -98,7 +98,7 @@ export const contribuables = [
         commune: "Antananarivo Renivohitra",
         telephone: "032 45 678 90",
         email: "contact@techsolutions.mg",
-        site: "www.techsolutions.mg",
+        siteWeb: "www.techsolutions.mg",
       },
     
       cnaps: "CNAPS 77821",
@@ -173,7 +173,7 @@ export const contribuables = [
         commune: "Antsirabe I",
         telephone: "033 22 334 55",
         email: "info@agroexport.mg",
-        site: "www.agroexport.mg",
+        siteWeb: "www.agroexport.mg",
       },
     
       cnaps: "CNAPS 55678",
@@ -250,7 +250,7 @@ export const contribuables = [
         commune: "Toamasina I",
         telephone: "034 77 889 00",
         email: "contact@transportexpress.mg",
-        site: "www.transportexpress.mg",
+        siteWeb: "www.transportexpress.mg",
       },
   
       cnaps: "CNAPS 99812",
@@ -325,7 +325,7 @@ export const contribuables = [
         commune: "Fianarantsoa I",
         telephone: "032 11 223 34",
         email: "info@greenenergy.mg",
-        site: "www.greenenergy.mg",
+        siteWeb: "www.greenenergy.mg",
       },
   
       cnaps: "CNAPS 44551",
