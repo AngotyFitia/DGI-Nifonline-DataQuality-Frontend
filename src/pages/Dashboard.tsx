@@ -82,6 +82,7 @@ export default function Dashboard() {
                 <span className={ item.statut === "Succès" ? "text-green-500" : item.statut === "Anomalie" ? "text-red-500": "text-yellow-500"}>
                   {item.statut}
                 </span>
+                
               </td>
               <td className="p-3 text-[var(--text-secondary)]">
                 {item.date}

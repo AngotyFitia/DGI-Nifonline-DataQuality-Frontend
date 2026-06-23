@@ -20,7 +20,7 @@ const mainNav: NavItem[] = [
 ];
 
 const secondaryNav: NavItem[] = [
-  { id: "imports", label: "Import", icon: Upload, to: "/imports" },
+  { id: "imports", label: "Import", icon: Upload, to: "/welcome/contribuables" },
   { id: "setting", label: "Paramètres", icon: Settings, to: "/settings" },
 ];
 
