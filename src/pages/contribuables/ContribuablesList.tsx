@@ -5,7 +5,7 @@ import Dropdown from "../../components/ui/DropDown";
 import Table from "../../components/ui/Table";
 import Button from "../../components/ui/Button";
 import { contribuables } from "../../data/contribuablesData";
-import { Eye, Pencil, History,Brain, Download, Trash } from "lucide-react";
+import { Eye, Pencil, History,Brain } from "lucide-react";
 import Modal from "../../components/ui/Modal";
 import ContribuableTabs from "../../components/contribuables/ContribuableTabs";
 
