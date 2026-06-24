@@ -1,6 +1,8 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { Upload, Copy, ChevronDown, Users, LayoutDashboard, Lightbulb, Brain, FileText, Settings,X,} from "lucide-react";
+import { Upload, Copy, Users, LayoutDashboard, Lightbulb, Brain, FileText, Settings,X, LogOut,} from "lucide-react";
 import logo from "../../assets/images/logo.png";
+import { useNavigate } from "react-router-dom";
+import Button from "../ui/Button";
 
 export type SidebarNavId = | "stat" | "contribuables" | "analyses" | "doublons" | "recommandations"| "rapports"| "imports"| "setting";
 type NavItem = {
@@ -9,7 +11,6 @@ type NavItem = {
   icon: React.ElementType;
   to: string;
 };
-
 const mainNav: NavItem[] = [
   { id: "stat", label: "Tableau de bord", icon: LayoutDashboard, to: "/welcome/stat" },
   { id: "contribuables", label: "Contribuables", icon: Users, to: "/welcome/contribuables?tab=list" },
@@ -21,22 +22,15 @@ const mainNav: NavItem[] = [
 
 const secondaryNav: NavItem[] = [
   { id: "imports", label: "Import", icon: Upload, to: "/welcome/contribuables?tab=import" },
-  { id: "setting", label: "Paramètres", icon: Settings, to: "/settings" },
+  { id: "setting", label: "Paramètres", icon: Settings, to: "/welcome/profile" },
 ];
 
 function NavIcon({ icon: Icon }: { icon: React.ElementType }) {
   return <Icon size={20} strokeWidth={2} />;
 }
 
-export default function Sidebar({
-  userName = "Admin",
-  onClose,
-  open,
-}: {
-  userName?: string;
-  onClose?: () => void;
-  open: boolean;
-}) {
+export default function Sidebar({ onClose, open }: { userName?: string; onClose?: () => void; open: boolean;}) {
+  const navigate = useNavigate();
   const location = useLocation();
   const isActive = (item: NavItem) => location.pathname === item.to;
   return (
@@ -91,13 +85,7 @@ export default function Sidebar({
       </nav>
 
       <div className="p-4 border-t border-[var(--border)]">
-        <div className="flex items-center justify-between bg-[var(--bg-secondary)] hover:bg-[var(--bg-primary)] transition p-3 rounded-xl cursor-pointer font-[Montserrat]">
-          <div className="flex flex-col">
-            <span className="text-sm font-semibold text-[var(--text-primary)]"> {userName}</span>
-            <span className="text-xs text-[var(--text-secondary)]"> Voir profil</span>
-          </div>
-          <ChevronDown size={14} className="text-[var(--text-secondary)]" />
-        </div>
+        <Button variant="cancel" className="w-full flex items-center justify-center gap-2 text-blue-500 hover:text-red-600" onClick={() => { localStorage.removeItem("token"); navigate("/");}}><LogOut size={16} />Déconnexion</Button>
       </div>
     </aside>
   );

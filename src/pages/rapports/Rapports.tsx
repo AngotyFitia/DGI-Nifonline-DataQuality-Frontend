@@ -55,6 +55,10 @@ export default function Rapports() {
   return (
     <div className="space-y-6">
 
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold text-[var(--text-primary)]">Rapports</h2>
+      </div>
+
       {toast && (
         <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)}/>
       )}

@@ -81,7 +81,9 @@ export default function Recommendations() {
           onClose={() => setToast(null)}
         />
       )}
-
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold text-[var(--text-primary)]">Recommandations</h2>
+      </div>
       <DashboardCard title="Recommandations IA">
         <div className="space-y-3">
           <Alert type="info" message="Les recommandations sont générées automatiquement à partir des analyses IA."/>
