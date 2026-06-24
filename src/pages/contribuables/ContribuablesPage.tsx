@@ -12,10 +12,7 @@ export default function ContribuablesPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-6">
-        Contribuables
-      </h1>
-
+      <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-6">Contribuables</h1>
       <Tabs
         defaultIndex={defaultIndex}
         tabs={[
