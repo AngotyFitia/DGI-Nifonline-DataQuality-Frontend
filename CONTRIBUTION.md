@@ -138,3 +138,12 @@ Ce document retrace l'évolution du projet DGI et les principales contributions 
   -  Redirection de la page de **Imports**
   
 - Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/9
+
+## PR #10 - Page d'édition de profil
+
+- Description: 
+  -  Création de la page **Profil**
+  -  Ajustement du couleur du Sidebar en mode mobile
+  -  Ajout du bouton de deconnexion
+  
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/10
