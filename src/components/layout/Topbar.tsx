@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ThemeToggle from "./ThemeToogle";
 import { Menu, Search } from "lucide-react";
+import { logout } from "../../services/authService";
 
 export default function Topbar({ onMenu }: { onMenu?: () => void }) {
   const [open, setOpen] = useState(false);
@@ -18,11 +19,19 @@ export default function Topbar({ onMenu }: { onMenu?: () => void }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        await logout(token);
+      } catch (err) {
+        console.error(err);
+      }
+    }
     localStorage.removeItem("token");
     navigate("/");
   };
-
+  
   return (
     <header className="h-14 flex items-center justify-between px-4 sm:px-6 border-b border-[var(--border)] bg-[var(--bg-secondary)] text-[var(--text-primary)]">
       <button className="lg:hidden" onClick={onMenu}><Menu /></button>
