@@ -147,3 +147,12 @@ Ce document retrace l'évolution du projet DGI et les principales contributions 
   -  Ajout du bouton de deconnexion
   
 - Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/10
+
+## PR #11 - Integration de la page d'authenfitication
+
+- Description: 
+  -  Appelation de l'API Backend pour la gestion d'authentification
+  - Integration du captcha sur les formulaires
+  - Ajout des liens de backend
+  
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/11
