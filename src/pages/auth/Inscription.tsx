@@ -5,9 +5,10 @@ import Button from "../../components/ui/Button";
 import AuthLayout from "../../components/auth/AuthLayout";
 import ReCAPTCHA from "react-google-recaptcha";
 import { register } from "../../services/authService";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function Inscription() {
-  
+  const { theme } = useTheme();
   const siteKey = "6LddzFYtAAAAAAV3y0_2ojM8LxOANs5r8sHzYvxw"; 
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -68,7 +69,9 @@ export default function Inscription() {
             {errors.confirmPassword && errors.confirmPassword.map((err, i) => (<p key={i} className="text-red-500 text-sm">{err}</p>))}          
           </div>
           {errors.global && errors.global.map((err, i) => ( <p key={i} className="text-red-500 text-sm">{err}</p>))}
-          <ReCAPTCHA sitekey={siteKey} onChange={(token) => setCaptchaToken(token)} />
+          <div className="flex justify-center my-4">
+            <ReCAPTCHA key={theme} sitekey={siteKey} onChange={(token) => setCaptchaToken(token)} theme={theme} />
+          </div>
           <Button variant="primary" className="w-full py-3 text-base font-[Montserrat]" onClick={handleSubmit}>S'inscrire</Button>
           <p className="text-sm text-center text-[var(--text-secondary)] mt-4 font-[Montserrat]">Vous avez déjà un compte?{" "}
             <span onClick={() => navigate("/")} className="text-[var(--primary)] cursor-pointer hover:underline">Se connecter</span>

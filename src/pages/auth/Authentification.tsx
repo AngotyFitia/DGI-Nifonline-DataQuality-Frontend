@@ -56,8 +56,8 @@ export default function Authentification() {
           </div>
           <div className="mb-5">
             <label className="text-sm text-[var(--text-secondary)] font-[Montserrat]">Mot de passe</label>
-            {errors.motDePasse && errors.motDePasse.map((err, i) => (<p key={i} className="text-red-500 text-sm">{err}</p>))}
             <Input type="password" placeholder="Entrez votre mot de passe" value={motDePasse} onChange={e => setMotDePasse(e.target.value)}/>
+            {errors.motDePasse && errors.motDePasse.map((err, i) => (<p key={i} className="text-red-500 text-sm">{err}</p>))}
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm mb-6">
             <label className="flex items-center gap-2 text-[var(--text-secondary)]">

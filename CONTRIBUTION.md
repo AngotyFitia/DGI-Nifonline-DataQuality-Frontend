@@ -156,3 +156,10 @@ Ce document retrace l'évolution du projet DGI et les principales contributions 
   - Ajout des liens de backend
   
 - Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/11
+
+## PR #12 - Style de Recaptcha
+
+- Description: 
+  -  Adaptation du style css du recaptcha
+  
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/12
