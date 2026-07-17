@@ -157,9 +157,15 @@ Ce document retrace l'évolution du projet DGI et les principales contributions 
   
 - Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/11
 
-## PR #12 - Style de Recaptcha
+## PR #12 - gestion de connexion et deconnexion
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/12
+
+## PR #13 - Style de Recaptcha
 
 - Description: 
   -  Adaptation du style css du recaptcha
   
-- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/12
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/13
+
+## PR #14 - Style de Recaptcha Connexion
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/14
