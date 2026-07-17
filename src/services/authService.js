@@ -24,5 +24,13 @@ export async function logout(token) {
     throw new Error("Erreur lors de la déconnexion");
   }
 }
-  
+
+export async function getCurrentUser(token) {
+  const response = await fetch("http://localhost:8080/auth/me", {
+    headers: { "Authorization": `Bearer ${token}` }
+  });
+  if (!response.ok) throw new Error("Impossible de récupérer l'utilisateur");
+  return response.json();
+}
+
   
