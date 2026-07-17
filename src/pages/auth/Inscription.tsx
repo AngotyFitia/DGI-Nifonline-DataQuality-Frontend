@@ -13,7 +13,7 @@ export default function Inscription() {
   const [email, setEmail] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [errors, setErrors] = useState<{ email?: string[]; motDePasse?: string[]; confirmPassword?: string[]; global?: string[] }>({});
 
 
@@ -68,7 +68,7 @@ export default function Inscription() {
             {errors.confirmPassword && errors.confirmPassword.map((err, i) => (<p key={i} className="text-red-500 text-sm">{err}</p>))}          
           </div>
           {errors.global && errors.global.map((err, i) => ( <p key={i} className="text-red-500 text-sm">{err}</p>))}
-          <ReCAPTCHA sitekey={siteKey} onChange={setCaptchaToken}  />
+          <ReCAPTCHA sitekey={siteKey} onChange={(token) => setCaptchaToken(token)} />
           <Button variant="primary" className="w-full py-3 text-base font-[Montserrat]" onClick={handleSubmit}>S'inscrire</Button>
           <p className="text-sm text-center text-[var(--text-secondary)] mt-4 font-[Montserrat]">Vous avez déjà un compte?{" "}
             <span onClick={() => navigate("/")} className="text-[var(--primary)] cursor-pointer hover:underline">Se connecter</span>

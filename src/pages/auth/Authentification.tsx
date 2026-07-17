@@ -7,6 +7,7 @@ import Checkbox from "../../components/ui/Checkbox";
 import AuthLayout from "../../components/auth/AuthLayout";
 import ReCAPTCHA from "react-google-recaptcha";
 import { login } from "../../services/authService";
+import type { AuthResponse } from "../../types/authentification";
 
 export default function Authentification() {
 
@@ -14,14 +15,14 @@ export default function Authentification() {
   const siteKey = "6LddzFYtAAAAAAV3y0_2ojM8LxOANs5r8sHzYvxw";
   const [email, setEmail] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [errors, setErrors] = useState<{ email?: string[]; motDePasse?: string[]; global?: string[] }>({});
 
 
   const handleSubmit = async () => {
     const response = await login({ email, motDePasse, recaptchaToken: captchaToken });
     if (response.ok) {
-      const data = await response.json();
+      const data: AuthResponse = await response.json();
       localStorage.setItem("jwt", data.token);
       navigate("/welcome/stat");
     } else {
@@ -65,7 +66,7 @@ export default function Authentification() {
             <a href="#" className="text-[var(--primary)] hover:underline font-[Montserrat]">Mot de passe oublié ?</a>
           </div>
           {errors.global && errors.global.map((err, i) => (<p key={i} className="text-red-500 text-sm">{err}</p>))}
-          <ReCAPTCHA sitekey={siteKey} onChange={setCaptchaToken}  />
+          <ReCAPTCHA sitekey={siteKey} onChange={(token) => setCaptchaToken(token)} />
           <Button variant="primary" className="w-full py-3 text-base font-[Montserrat]to" onClick={handleSubmit}>Se connecter</Button>
         <p className="text-sm text-center text-[var(--text-secondary)] mt-4 font-[Montserrat]">Pas de compte ?{" "}
           <span onClick={() => navigate("/inscription")} className="text-[var(--primary)] cursor-pointer hover:underline">Créez-en un</span>
