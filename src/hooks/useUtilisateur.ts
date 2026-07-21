@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getUtilisateurs } from "../services/utilisateurService";
+import { getUtilisateurs, updateEtatUtilisateur } from "../services/utilisateurService";
 import type { Utilisateur } from "../types/utilisateur";
 
 export function useUtilisateurs(token: string) {
@@ -21,5 +21,17 @@ export function useUtilisateurs(token: string) {
     fetchData();
   }, [token]);
 
-  return { utilisateurs, loading, error };
+  const updateEtat = async (id: number, etat: number) => {
+    try {
+      const updated = await updateEtatUtilisateur(id, etat, token);
+      setUtilisateurs(prev =>
+        prev.map(u => u.id === updated.id ? updated : u)
+      );
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
+  return { utilisateurs, loading, error, updateEtat };
 }
+
