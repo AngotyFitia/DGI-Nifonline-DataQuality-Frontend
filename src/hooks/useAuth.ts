@@ -11,7 +11,7 @@ export function useAuth() {
   const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
 
   const handleLogin = async (email: string, motDePasse: string, captchaToken: string | null) => {
-    const response = await login({ email, motDePasse, recaptchaToken: captchaToken });
+    const response = await login({ email, motDePasse, recaptchaToken: captchaToken, idProfil: 0});
 
     if (response.ok) {
       const data: AuthResponse = await response.json();

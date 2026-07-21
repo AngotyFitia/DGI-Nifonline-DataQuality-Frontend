@@ -1,10 +1,12 @@
 import { useState } from "react";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
+import Dropdown from "../../components/ui/DropDown";
 import AuthLayout from "../../components/auth/AuthLayout";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useTheme } from "../../context/ThemeContext";
 import { useRegister } from "../../hooks/useRegister";
+import { useProfils } from "../../hooks/useProfils";
 
 export default function Inscription() {
   const { theme } = useTheme();
@@ -13,6 +15,8 @@ export default function Inscription() {
   const [motDePasse, setMotDePasse] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const profils = useProfils();
+  const [profilId, setProfilId] = useState("");
 
   const { handleRegister, errors } = useRegister();
 
@@ -20,9 +24,7 @@ export default function Inscription() {
     <AuthLayout>
       <div className="w-full max-w-md bg-[var(--bg-secondary)] border border-[var(--border)] shadow-xl rounded-xl sm:rounded-2xl p-6 sm:p-8 mx-auto">
         <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-center font-[Montserrat]">Inscription</h2>
-        <p className="text-sm sm:text-base text-center text-[var(--text-secondary)] mb-8 font-[Montserrat]">
-          Créez votre compte
-        </p>
+        <p className="text-sm sm:text-base text-center text-[var(--text-secondary)] mb-8 font-[Montserrat]">Créez votre compte</p>
         <div className="mb-5">
           <label className="text-sm text-[var(--text-secondary)] font-[Montserrat]">Adresse email</label>
           <Input type="email" placeholder="exemple@domaine.com" value={email} onChange={(e) => setEmail(e.target.value)}/>
@@ -44,6 +46,13 @@ export default function Inscription() {
             <p key={i} className="text-red-500 text-sm">{err}</p>
           ))}
         </div>
+        <div className="mb-5">
+          <label className="text-sm text-[var(--text-secondary)] font-[Montserrat]">Rôle</label>
+          <Dropdown value={profilId} onChange={setProfilId} options={profils.map(profil => ({ ...profil, value: String(profil.value) }))} />
+          {errors.idProfil && errors.idProfil.map((err, i) => (
+              <p key={i} className="text-red-500 text-sm">{err}</p>
+          ))}
+        </div>
 
         {errors.global && errors.global.map((err, i) => (
           <p key={i} className="text-red-500 text-sm">{err}</p>
@@ -56,7 +65,7 @@ export default function Inscription() {
           <p key={i} className="text-red-500 text-sm text-center">{err}</p>
         ))}
         
-        <Button variant="primary" className="w-full py-3 text-base font-[Montserrat]" onClick={() => handleRegister(email, motDePasse, confirmPassword, captchaToken)}>S'inscrire</Button>
+        <Button variant="primary" className="w-full py-3 text-base font-[Montserrat]" onClick={() => handleRegister(email, motDePasse, confirmPassword, captchaToken, profilId) }>S'inscrire</Button>
         <p className="text-sm text-center text-[var(--text-secondary)] mt-4 font-[Montserrat]">Vous avez déjà un compte ?{" "}
           <span onClick={() => window.location.href = "/"} className="text-[var(--primary)] cursor-pointer hover:underline">Se connecter</span>
         </p>
