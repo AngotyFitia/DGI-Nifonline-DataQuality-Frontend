@@ -10,10 +10,20 @@ import Recommandations from "../pages/recommandations/Recommandations";
 import Rapports from "../pages/rapports/Rapports";
 import ProfilePage from "../pages/ProfilePage";
 import Inscription from "../pages/auth/Inscription";
+import ListeUtilisateurs from "../pages/admin/ListeUtilisateurs";
 
 export const router = createBrowserRouter([
   { path: "/", element: <Authentification />,},
   { path: "/inscription", element: <Inscription />},
+  {
+    path: "/admin", 
+    element: <MainLayout />,
+    children: [
+      { path: "tableau-de-bord", element: <Dashboard /> },  
+      { path: "liste-utilisateurs", element: <ListeUtilisateurs /> },  
+      { path: "audit", element: <ListeUtilisateurs /> },  
+    ]
+  },
   {
     path: "/welcome",
     element: <MainLayout />,
