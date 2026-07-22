@@ -12,10 +12,10 @@ export default function DashboardUtilisateurs() {
 
   return (
     <div className="space-y-6">
-      <DashboardCard title="KPI Utilisateurs">
+      <DashboardCard title="Statistique des utilisateurs">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
-            <p className="text-sm text-[var(--text-secondary)]">Statistique Utilisateurs</p>
+            <p className="text-sm text-[var(--text-secondary)]">Total utilisateurs</p>
             <p className="text-2xl font-bold text-[var(--text-primary)]">{kpi.total}</p>
           </Card>
           <Card>
