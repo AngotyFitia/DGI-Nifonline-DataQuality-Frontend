@@ -81,7 +81,7 @@ export default function DesignSystemPlayground() {
 
       <Card>
         <h2 className="mb-2 font-semibold">Pagination</h2>
-        <Pagination />
+        <Pagination currentPage={0} totalPages={5} onPageChange={() => {}} />
       </Card>
     </div>
   );

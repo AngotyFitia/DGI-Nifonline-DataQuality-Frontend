@@ -1,27 +1,28 @@
 import { useState } from "react";
 import DashboardCard from "../../components/ui/DashboardCard";
+import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
 import Modal from "../../components/ui/Modal";
-import { Eye, Ban, Settings, Check } from "lucide-react";
+import { Eye, Ban, Check } from "lucide-react";
 import { useUtilisateurs } from "../../hooks/useUtilisateur";
 import { useProfils } from "../../hooks/useProfils";
 import Dropdown from "../../components/ui/DropDown";
+import Input from "../../components/ui/Input";
+import Pagination from "../../components/ui/Pagination";
 
 export default function ListeUtilisateurs() {
   const token = localStorage.getItem("jwt") || ""; 
-  const { utilisateurs, loading, error, updateEtat } = useUtilisateurs(token);
-  const profils = useProfils();
-
-  const [selected, setSelected] = useState<any | null>(null);
-  const [modalType, setModalType] = useState<"view" | "activate" | "deactivate" | null>(null);
   const [filterProfil, setFilterProfil] = useState("tous");
   const [filterEtat, setFilterEtat] = useState("tous");
-  const filteredUsers = utilisateurs.filter((u) => {
-    const profilOk =filterProfil === "tous" || u.profil.intitule === filterProfil;
-    const etatOk =filterEtat === "tous" || u.etatIntitule.toLowerCase() === filterEtat.toLowerCase();
-    return profilOk && etatOk;
-  });
-  
+  const [filterEmail, setFilterEmail] = useState("");
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
+
+  const profils = useProfils();
+  const [selected, setSelected] = useState<any | null>(null);
+  const [modalType, setModalType] = useState<"view" | "activate" | "deactivate" | null>(null);
+
+  const { utilisateurs, totalPages, loading, error, updateEtat } = useUtilisateurs( token, filterProfil, filterEtat, filterEmail, page, size);
   const profilOptions = [
     { label: "Tous les profils", value: "tous" },
     ...profils.map((p) => ({ label: p.label, value: p.label }))
@@ -41,32 +42,47 @@ export default function ListeUtilisateurs() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-semibold text-[var(--text-primary)]">Liste des utilisateurs</h2>
-        <Button variant="primary"><Settings size={16} /> Gérer rôles</Button>
       </div>
-
-      <div className="flex gap-4">
+      <div className="flex gap-4 items-center">
+        <Input value={filterEmail} onChange={(e) => setFilterEmail(e.target.value)} placeholder="Rechercher par email..."className="w-64"/>
         <Dropdown value={filterProfil} onChange={setFilterProfil} options={profilOptions} className="w-48"/>
         <Dropdown value={filterEtat} onChange={setFilterEtat} options={etatOptions} className="w-48"/>
+        <div className="flex items-center gap-2">
+          <label className="text-sm font-medium text-[var(--text-primary)]">Nombre par page :</label>
+          <Input type="number" value={size} onChange={(e) => setSize(Number(e.target.value))}className="w-20"/>
+        </div>
       </div>
 
       <DashboardCard title="Utilisateurs enregistrés">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredUsers.map((u) => (
-            <div key={u.id} className="border rounded-lg p-4 shadow-sm bg-[var(--bg-secondary)]">
+          {utilisateurs.map((u) => (
+            <Card key={u.id}>
               <p className="font-semibold text-[var(--text-primary)]">{u.email}</p>
-              <p className="text-sm text-[var(--text-secondary)]"> Profil : {u.profil.intitule}</p>
-              <p className="text-sm font-medium">État : <span className={u.etatCouleur}>{u.etatIntitule}</span></p>
+              <p className="text-sm text-[var(--text-secondary)]">Profil : {u.profil.intitule}</p>
+              <p className="text-sm font-medium">
+                État : <span className={u.etatCouleur}>{u.etatIntitule}</span>
+              </p>
               <div className="flex justify-center gap-3 mt-3">
-                  <Button variant="primary" className="px-2 py-1" onClick={() => { setSelected(u); setModalType("view"); }}><Eye size={16} /></Button>
-                  {(u.profil.intitule === "chef" || u.profil.intitule === "agent") && (
-                  <>
-                    <Button variant="success" className="px-2 py-1" onClick={() => { setSelected(u); setModalType("activate"); }}><Check size={16} /></Button>
-                    <Button variant="danger" className="px-2 py-1" onClick={() => { setSelected(u); setModalType("deactivate"); }}><Ban size={16} /></Button>
-                  </>
-                  )}
+                <Button variant="primary" className="px-2 py-1" onClick={() => { setSelected(u); setModalType("view"); }}>
+                  <Eye size={16} />
+                </Button>
+                {Number(u.etat) !== 10 && (
+                  <Button variant="success" className="px-2 py-1" onClick={() => { setSelected(u); setModalType("activate"); }}>
+                    <Check size={16} />
+                  </Button>
+                )}
+                {Number(u.etat) != 10 && (
+                  <Button variant="danger" className="px-2 py-1" onClick={() => { setSelected(u); setModalType("deactivate"); }}>
+                    <Ban size={16} />
+                  </Button>
+                )}
               </div>
-            </div>
+            </Card>
           ))}
+        </div>
+
+        <div className="flex justify-between items-center mt-4">
+          <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
         </div>
       </DashboardCard>
 
@@ -83,10 +99,7 @@ export default function ListeUtilisateurs() {
           <DashboardCard title="Confirmer activation">
             <p>Voulez-vous activer l’utilisateur <b>{selected.email}</b> ?</p>
             <div className="flex gap-2 mt-4">
-              <Button variant="success" onClick={async () => {
-                await updateEtat(selected.id, 10); // 10 = actif
-                setSelected(null);
-              }}>
+              <Button variant="success" onClick={async () => { await updateEtat(selected.id, 10);setSelected(null);}}>
                 Oui, activer
               </Button>
               <Button variant="secondary" onClick={() => setSelected(null)}>Annuler</Button>
@@ -98,17 +111,13 @@ export default function ListeUtilisateurs() {
           <DashboardCard title="Confirmer désactivation">
             <p>Voulez-vous désactiver l’utilisateur <b>{selected.email}</b> ?</p>
             <div className="flex gap-2 mt-4">
-              <Button variant="danger" onClick={async () => {
-                await updateEtat(selected.id, 5); // 5 = inactif
-                setSelected(null);
-              }}>
+              <Button variant="danger" onClick={async () => { await updateEtat(selected.id, 5); setSelected(null);}}>
                 Oui, désactiver
               </Button>
               <Button variant="secondary" onClick={() => setSelected(null)}>Annuler</Button>
             </div>
           </DashboardCard>
         )}
-
       </Modal>
     </div>
   );

@@ -85,7 +85,7 @@ export default function ContribuablesList() {
         <div className="mt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-[var(--text-secondary)]"> Affichage de 1 à {filteredContribuables.length} sur 50 000 résultats</p>
           <div className="flex gap-2">
-                <Pagination />
+            <Pagination currentPage={0} totalPages={5} onPageChange={() => {}} />
           </div>
         </div>
       </DashboardCard>

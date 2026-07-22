@@ -15,17 +15,17 @@ type NavItem = {
 
 const adminNav: NavItem[] = [
   { id: "stat", label: "Tableau de bord", icon: LayoutDashboard, to: "/admin/tableau-de-bord" },
-  { id: "utilisateurs", label: "Utilisateurs", icon: Users, to: "/admin/liste-utilisateurs" },
-  { id: "analyses", label: "Analyses IA", icon: Brain, to: "/welcome/analyses" },
-  { id: "doublons", label: "Doublons", icon: Copy, to: "/welcome/doublons" },
-  { id: "recommandations", label: "Recommandations", icon: Lightbulb, to: "/welcome/recommandations" },
+  { id: "utilisateurs", label: "Utilisateurs", icon: Users, to: "/admin/liste-utilisateurs" }, 
   { id: "rapports", label: "Rapports", icon: FileText, to: "/welcome/rapports" },
 ];
 
 const chefNav: NavItem[] = [
-  { id: "stat", label: "Tableau de bord", icon: LayoutDashboard, to: "/welcome/chef/stat" },
-  { id: "contribuables", label: "Contribuables", icon: Users, to: "/welcome/contribuables?tab=list" },
-  { id: "analyses", label: "Analyses IA", icon: Brain, to: "/welcome/analyses" },
+  { id: "stat", label: "Tableau de bord", icon: LayoutDashboard, to: "/chef/chef/stat" },
+  { id: "contribuables", label: "Contribuables", icon: Users, to: "/chef/contribuables?tab=list" },
+  { id: "analyses", label: "Analyses IA", icon: Brain, to: "/chef/analyses" },
+  { id: "doublons", label: "Doublons", icon: Copy, to: "/chef/doublons" },
+  { id: "recommandations", label: "Recommandations", icon: Lightbulb, to: "/chef/recommandations" },
+  { id: "rapports", label: "Rapports", icon: FileText, to: "/chef/rapports" },
 ];
 
 const agentNav: NavItem[] = [

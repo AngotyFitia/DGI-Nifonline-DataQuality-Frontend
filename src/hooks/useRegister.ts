@@ -12,7 +12,7 @@ export function useRegister() {
           return;
         }
       
-        const response = await register({ email, motDePasse, recaptchaToken: captchaToken, idProfil: idProfil ? Number(idProfil) : null,});
+        const response = await register({ email, motDePasse, recaptchaToken: captchaToken, idProfil: idProfil ? Number(idProfil) : 0});
         const data = await response.json();
         if (response.ok && data.success) {
           navigate("/", { state: { toastMessage: data.message } });
