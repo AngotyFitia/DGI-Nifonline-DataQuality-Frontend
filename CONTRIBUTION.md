@@ -169,3 +169,8 @@ Ce document retrace l'évolution du projet DGI et les principales contributions 
 
 ## PR #14 - Style de Recaptcha Connexion
 - Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/14
+
+## PR #15 - Gestion des utilisateurs
+  - intégration des filtres et pagination côté UI, affichage des KPI dans le Dashboard Admin, gestion dynamique des états utilisateurs, et validation reCAPTCHA.
+  
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/15

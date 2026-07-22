@@ -1,6 +1,6 @@
 import type { AuthRequest, User } from "../types/authentification";
 
-const BASE_URL = "https://dgi-nifonline-dataquality-backend.onrender.com/auth";
+const BASE_URL = import.meta.env.VITE_API_URL + "/auth";
 
 export async function register(data: AuthRequest): Promise<Response> {
   return fetch(`${BASE_URL}/register`, {
@@ -17,7 +17,6 @@ export async function login(data: AuthRequest): Promise<Response> {
     body: JSON.stringify(data),
   });
 }
-
 
 export async function logout(token: string): Promise<void> {
   const response = await fetch(`${BASE_URL}/logout`, {

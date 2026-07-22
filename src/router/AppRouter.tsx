@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
+import DashboardUtilisateurs from "../pages/admin/DashboardUtilisateurs";
 import Dashboard from "../pages/Dashboard";
 import Authentification from "../pages/auth/Authentification";
 import DesignSystemPlayground from "../pages/DesignSystemPlayground";
@@ -10,10 +11,20 @@ import Recommandations from "../pages/recommandations/Recommandations";
 import Rapports from "../pages/rapports/Rapports";
 import ProfilePage from "../pages/ProfilePage";
 import Inscription from "../pages/auth/Inscription";
+import ListeUtilisateurs from "../pages/admin/ListeUtilisateurs";
 
 export const router = createBrowserRouter([
   { path: "/", element: <Authentification />,},
   { path: "/inscription", element: <Inscription />},
+  {
+    path: "/admin", 
+    element: <MainLayout />,
+    children: [
+      { path: "tableau-de-bord", element: <DashboardUtilisateurs /> },  
+      { path: "liste-utilisateurs", element: <ListeUtilisateurs /> },  
+      { path: "audit", element: <ListeUtilisateurs /> },  
+    ]
+  },
   {
     path: "/welcome",
     element: <MainLayout />,
