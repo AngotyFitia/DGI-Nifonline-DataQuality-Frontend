@@ -1,4 +1,4 @@
-import type { Utilisateur } from "../types/utilisateur";
+import type { Utilisateur, UtilisateurKpi } from "../types/utilisateur";
 
 export async function getUtilisateurs(token: string, profil: string, etat: string, email: string, page: number,size: number): Promise<{ content: Utilisateur[]; totalPages: number; number: number; size: number }> {
   const response = await fetch(
@@ -23,6 +23,18 @@ export async function updateEtatUtilisateur(id: number, etat: number, token: str
 
   if (!response.ok) {
     throw new Error("Impossible de mettre à jour l'état de l'utilisateur");
+  }
+
+  return response.json();
+}
+
+export async function getUtilisateurKpi(token: string): Promise<UtilisateurKpi> {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/api/utilisateurs/kpi`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    throw new Error("Impossible de récupérer les KPI utilisateurs");
   }
 
   return response.json();

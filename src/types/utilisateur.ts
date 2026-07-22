@@ -9,3 +9,9 @@ export interface Utilisateur {
     etatIntitule: string;
 }
   
+export type UtilisateurKpi = {
+    total: number;
+    actifs: number;
+    inactifs: number;
+    nouveaux7Jours: number;
+};

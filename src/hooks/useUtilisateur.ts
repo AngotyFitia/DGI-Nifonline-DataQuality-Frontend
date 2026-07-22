@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { getUtilisateurs, updateEtatUtilisateur } from "../services/utilisateurService";
-import type { Utilisateur } from "../types/utilisateur";
+import { getUtilisateurs, updateEtatUtilisateur, getUtilisateurKpi } from "../services/utilisateurService";
+import type { Utilisateur, UtilisateurKpi } from "../types/utilisateur";
 
 export function useUtilisateurs(
   token: string,
@@ -42,4 +42,26 @@ export function useUtilisateurs(
   return { utilisateurs, totalPages, loading, error, updateEtat };
 }
 
+
+export function useUtilisateurKpi(token: string) {
+  const [kpi, setKpi] = useState<UtilisateurKpi | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getUtilisateurKpi(token);
+        setKpi(data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [token]);
+
+  return { kpi, loading, error };
+}
 
