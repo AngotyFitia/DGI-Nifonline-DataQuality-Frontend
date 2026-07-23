@@ -174,3 +174,10 @@ Ce document retrace l'évolution du projet DGI et les principales contributions 
   - intégration des filtres et pagination côté UI, affichage des KPI dans le Dashboard Admin, gestion dynamique des états utilisateurs, et validation reCAPTCHA.
   
 - Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/15
+
+## PR #16 - Dashboard utilsateurs et securite
+  - Intégration des kpi de dashboard securite et utilisateurs
+  - Gestion de pagination et de filtres
+  - Renforcement de securité
+  
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/16
