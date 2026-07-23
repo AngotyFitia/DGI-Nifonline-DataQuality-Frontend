@@ -19,6 +19,7 @@ export default function Authentification() {
   const { handleLogin, errors } = useAuth();
   const location = useLocation();
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  console.log("Errors:", errors);
 
   useEffect(() => {
     if (location.state?.toastMessage) {
@@ -47,10 +48,14 @@ export default function Authentification() {
             <p key={i} className="text-red-500 text-sm">{err}</p>
           ))}
         </div>
-        {errors.global && errors.global.map((err, i) => (
-          <Alert key={i} type="error" message={err} />
-        ))}
-
+        {errors.global && errors.global.map((err: any, i: number) => {
+          if (typeof err === "string") {
+            return <Alert key={i} type="error" message={err} />;
+          }
+          return (
+            <Alert key={i} type={err.type === "warning" ? "warning" : "error"} message={err.message}/>
+          );
+        })}
         <div className="flex justify-center my-4">
           <ReCAPTCHA key={theme} sitekey={siteKey} onChange={(token) => setCaptchaToken(token)} theme={theme}/>
         </div>

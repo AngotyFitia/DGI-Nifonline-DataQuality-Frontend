@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getProfils } from "../services/profilService";
+import { getProfilKpi, getProfils } from "../services/profilService";
 
 export function useProfils() {
   const [profils, setProfils] = useState<{ label: string; value: number }[]>([]);
@@ -18,3 +18,19 @@ export function useProfils() {
 
   return profils;
 }
+
+export function useProfilKpi(token: string) {
+  const [kpi, setKpi] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    getProfilKpi(token)
+      .then(setKpi)
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, [token]);
+
+  return { kpi, loading, error };
+}
+
