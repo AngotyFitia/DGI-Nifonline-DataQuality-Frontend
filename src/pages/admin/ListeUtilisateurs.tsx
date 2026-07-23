@@ -43,17 +43,16 @@ export default function ListeUtilisateurs() {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-semibold text-[var(--text-primary)]">Liste des utilisateurs</h2>
       </div>
-      <div className="flex gap-4 items-center">
-        <Input value={filterEmail} onChange={(e) => setFilterEmail(e.target.value)} placeholder="Rechercher par email..."className="w-64"/>
+      <div className="flex gap-4 items-center">      
+        <Input value={filterEmail} onChange={(e) => setFilterEmail(e.target.value)} placeholder="Rechercher par email..."className="w-64"/> 
         <Dropdown value={filterProfil} onChange={setFilterProfil} options={profilOptions} className="w-48"/>
         <Dropdown value={filterEtat} onChange={setFilterEtat} options={etatOptions} className="w-48"/>
-        <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-[var(--text-primary)]">Nombre par page :</label>
-          <Input type="number" value={size} onChange={(e) => setSize(Number(e.target.value))}className="w-20"/>
-        </div>
       </div>
 
       <DashboardCard title="Utilisateurs enregistrés">
+        {!utilisateurs || utilisateurs.length === 0 ? (
+         <p className="text-center text-[var(--text-secondary)]">Aucun utilisateur</p>
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {utilisateurs.map((u) => (
             <Card key={u.id}>
@@ -71,7 +70,7 @@ export default function ListeUtilisateurs() {
                     <Check size={16} />
                   </Button>
                 )}
-                {Number(u.etat) != 10 && (
+                {Number(u.etat) !== 10 && Number(u.etat) !== 5 && (
                   <Button variant="danger" className="px-2 py-1" onClick={() => { setSelected(u); setModalType("deactivate"); }}>
                     <Ban size={16} />
                   </Button>
@@ -80,8 +79,10 @@ export default function ListeUtilisateurs() {
             </Card>
           ))}
         </div>
-
-        <div className="flex justify-between items-center mt-4">
+      )}
+        <div className="flex justify-start items-center gap-4 mt-4">
+          <label className="text-sm font-medium text-[var(--text-primary)]">Nombre par page :</label>
+          <Input type="number" value={size} onChange={(e) => setSize(Number(e.target.value))} className="w-auto text-center" style={{ maxWidth: "60px" }}/>
           <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
         </div>
       </DashboardCard>

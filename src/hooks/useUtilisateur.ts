@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getUtilisateurs, updateEtatUtilisateur, getUtilisateurKpi } from "../services/utilisateurService";
+import { getUtilisateurs, updateEtatUtilisateur, getUtilisateurKpi, getInscriptionsParMoisRange } from "../services/utilisateurService";
 import type { Utilisateur, UtilisateurKpi } from "../types/utilisateur";
 
 export function useUtilisateurs(
@@ -63,5 +63,20 @@ export function useUtilisateurKpi(token: string) {
   }, [token]);
 
   return { kpi, loading, error };
+}
+
+export function useInscriptionsParMoisRange(token: string, start: string, end: string) {
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    getInscriptionsParMoisRange(token, start, end)
+      .then(setData)
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, [token, start, end]);
+
+  return { data, loading, error };
 }
 

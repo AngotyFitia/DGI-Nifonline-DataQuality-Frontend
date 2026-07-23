@@ -1,10 +1,10 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Upload, Copy, Users, LayoutDashboard, Lightbulb, Brain, FileText, Settings, X, LogOut } from "lucide-react";
+import { Upload, Copy, Users, LayoutDashboard, Lightbulb, Brain, FileText, Settings, X, LogOut, Shield } from "lucide-react";
 import logo from "../../assets/images/logo.png";
 import Button from "../ui/Button";
 import { useUserRole } from "../../hooks/useRole";
 
-export type SidebarNavId =| "stat"| "contribuables"| "analyses"| "doublons"| "recommandations"| "rapports"| "imports"| "setting"| "utilisateurs";
+export type SidebarNavId =|"stat-utilisateurs"| "stat-securite"| "stat"| "contribuables"| "analyses"| "doublons"| "recommandations"| "rapports"| "imports"| "setting"| "utilisateurs";
 
 type NavItem = {
   id: SidebarNavId;
@@ -14,8 +14,9 @@ type NavItem = {
 };
 
 const adminNav: NavItem[] = [
-  { id: "stat", label: "Tableau de bord", icon: LayoutDashboard, to: "/admin/tableau-de-bord" },
-  { id: "utilisateurs", label: "Utilisateurs", icon: Users, to: "/admin/liste-utilisateurs" }, 
+  { id: "stat-utilisateurs", label: "Utilisateurs – Statistiques", icon: LayoutDashboard, to: "/admin/statistique-utilisateurs" },
+  { id: "stat-securite", label: "Sécurité – Statistiques", icon: Shield, to: "/admin/statistique-securite" },
+  { id: "utilisateurs", label: "Gestion des utilisateurs", icon: Users, to: "/admin/liste-utilisateurs" }, 
   { id: "rapports", label: "Rapports", icon: FileText, to: "/welcome/rapports" },
 ];
 

@@ -8,8 +8,10 @@ export async function getUtilisateurs(token: string, profil: string, etat: strin
     }
   );
 
-  if (!response.ok) {
-    throw new Error("Impossible de récupérer les utilisateurs");
+  if (response.status === 401) {
+    localStorage.removeItem("jwt");
+    window.location.href = "/"; 
+    throw new Error("Non autorisé : token invalide ou expiré");
   }
   return response.json();
 }
@@ -21,10 +23,11 @@ export async function updateEtatUtilisateur(id: number, etat: number, token: str
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  if (!response.ok) {
-    throw new Error("Impossible de mettre à jour l'état de l'utilisateur");
+  if (response.status === 401) {
+    localStorage.removeItem("jwt");
+    window.location.href = "/"; 
+    throw new Error("Non autorisé : token invalide ou expiré");
   }
-
   return response.json();
 }
 
@@ -33,9 +36,28 @@ export async function getUtilisateurKpi(token: string): Promise<UtilisateurKpi> 
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  if (!response.ok) {
-    throw new Error("Impossible de récupérer les KPI utilisateurs");
+  if (response.status === 401) {
+    localStorage.removeItem("jwt");
+    window.location.href = "/"; 
+    throw new Error("Non autorisé : token invalide ou expiré");
   }
 
   return response.json();
 }
+
+export async function getInscriptionsParMoisRange(token: string, start: string, end: string) {
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/api/utilisateurs/kpi-inscriptions-range?startDate=${start}&endDate=${end}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+  if (res.status === 401) {
+    localStorage.removeItem("jwt");
+    window.location.href = "/"; 
+    throw new Error("Non autorisé : token invalide ou expiré");
+  }
+  if (!res.ok) throw new Error("Erreur lors du chargement des inscriptions");
+  return res.json();
+}
+
