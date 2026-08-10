@@ -17,7 +17,8 @@ const adminNav: NavItem[] = [
   { id: "stat-utilisateurs", label: "Utilisateurs – Statistiques", icon: LayoutDashboard, to: "/admin/statistique-utilisateurs" },
   { id: "stat-securite", label: "Sécurité – Statistiques", icon: Shield, to: "/admin/statistique-securite" },
   { id: "utilisateurs", label: "Gestion des utilisateurs", icon: Users, to: "/admin/liste-utilisateurs" }, 
-  { id: "rapports", label: "Rapports", icon: FileText, to: "/welcome/rapports" },
+  { id: "imports", label: "Imports", icon: Upload, to: "/admin/imports" },
+  // { id: "rapports", label: "Rapports", icon: FileText, to: "/welcome/rapports" },
 ];
 
 const chefNav: NavItem[] = [
