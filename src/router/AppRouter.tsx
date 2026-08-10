@@ -13,6 +13,7 @@ import Rapports from "../pages/rapports/Rapports";
 import ProfilePage from "../pages/ProfilePage";
 import Inscription from "../pages/auth/Inscription";
 import ListeUtilisateurs from "../pages/admin/ListeUtilisateurs";
+import Imports from "../pages/admin/Imports";
 
 export const router = createBrowserRouter([
   { path: "/", element: <Authentification />,},
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
       { path: "statistique-securite", element: <DahsboardSecurite /> },  
       { path: "liste-utilisateurs", element: <ListeUtilisateurs /> },  
       { path: "audit", element: <ListeUtilisateurs /> },  
+      { path: "imports", element: <Imports /> },  
     ]
   },
   {
