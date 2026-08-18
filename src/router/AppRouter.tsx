@@ -13,7 +13,8 @@ import Rapports from "../pages/rapports/Rapports";
 import ProfilePage from "../pages/ProfilePage";
 import Inscription from "../pages/auth/Inscription";
 import ListeUtilisateurs from "../pages/admin/ListeUtilisateurs";
-import Imports from "../pages/admin/Imports";
+import ImportTerritoires from "../pages/admin/imports/territoires/ImportTerritoires";
+import ImportActivites from "../pages/admin/imports/activites/ImportActivites";
 
 export const router = createBrowserRouter([
   { path: "/", element: <Authentification />,},
@@ -26,7 +27,8 @@ export const router = createBrowserRouter([
       { path: "statistique-securite", element: <DahsboardSecurite /> },  
       { path: "liste-utilisateurs", element: <ListeUtilisateurs /> },  
       { path: "audit", element: <ListeUtilisateurs /> },  
-      { path: "imports", element: <Imports /> },  
+      { path: "territoire/import", element: <ImportTerritoires /> },  
+      { path: "activites/import", element: <ImportActivites /> },  
     ]
   },
   {

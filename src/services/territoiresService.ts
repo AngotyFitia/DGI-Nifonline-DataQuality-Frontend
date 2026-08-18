@@ -1,5 +1,4 @@
-// src/services/geoImportService.ts
-export async function uploadGeoFile(
+export async function uploadTerritoireFile(
     endpoint: string,
     file: File,
     token?: string
@@ -20,12 +19,13 @@ export async function uploadGeoFile(
     }
   
     return res.json();
-  }
+}
   
-  export const GEO_ENDPOINTS = {
-    provinces: "/import/provinces",
-    regions: "/import/regions",
-    districts: "/import/districts",
-    communes: "/import/communes",
-  };
+export const GEO_ENDPOINTS = {
+  provinces: "/import/provinces",
+  regions: "/import/regions",
+  districts: "/import/districts",
+  communes: "/import/communes",
+};
   
+
