@@ -80,7 +80,7 @@ export default function Sidebar({ onClose, open }: { onClose?: () => void; open:
         <div className="space-y-2">
         {navItems.map((item) => {
             const active = isActive(item);
-            if (item.children) {
+            if (item.children && item.children.length > 0) {
               return (
                 <div key={item.id}>
                   <button onClick={() => toggleParent(item.id)}
@@ -122,7 +122,7 @@ export default function Sidebar({ onClose, open }: { onClose?: () => void; open:
           {secondaryNav.map((item) => {
             const active = isActive(item);
             return (
-              <NavLink key={item.id} to={item.to} onClick={onClose}
+              <NavLink key={item.id} to={item.to!} onClick={onClose}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition
                   ${
                     active

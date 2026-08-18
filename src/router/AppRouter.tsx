@@ -14,6 +14,7 @@ import ProfilePage from "../pages/ProfilePage";
 import Inscription from "../pages/auth/Inscription";
 import ListeUtilisateurs from "../pages/admin/ListeUtilisateurs";
 import ImportTerritoires from "../pages/admin/imports/territoires/ImportTerritoires";
+import ListeTerritoires from "../pages/admin/imports/territoires/ListeTerritoires";
 import ImportActivites from "../pages/admin/imports/activites/ImportActivites";
 
 export const router = createBrowserRouter([
@@ -28,6 +29,7 @@ export const router = createBrowserRouter([
       { path: "liste-utilisateurs", element: <ListeUtilisateurs /> },  
       { path: "audit", element: <ListeUtilisateurs /> },  
       { path: "territoire/import", element: <ImportTerritoires /> },  
+      { path: "territoire/liste", element: <ListeTerritoires /> },  
       { path: "activites/import", element: <ImportActivites /> },  
     ]
   },
