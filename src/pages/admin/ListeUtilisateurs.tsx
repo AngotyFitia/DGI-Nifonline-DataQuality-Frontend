@@ -35,7 +35,7 @@ export default function ListeUtilisateurs() {
     { label: "En attente", value: "en attente" }
   ];
 
-  if (loading) return <p>Chargement...</p>;
+  if (loading ) return <p>Chargement...</p>; 
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (

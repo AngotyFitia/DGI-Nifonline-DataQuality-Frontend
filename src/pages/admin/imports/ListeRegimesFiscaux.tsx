@@ -1,0 +1,98 @@
+import { useState } from "react";
+import DashboardCard from "../../../components/ui/DashboardCard";
+import Table from "../../../components/ui/Table";
+import Pagination from "../../../components/ui/Pagination";
+import Input from "../../../components/ui/Input";
+import Dropdown from "../../../components/ui/DropDown";
+import Button from "../../../components/ui/Button";
+import { useRegimesFiscaux } from "../../../hooks/useImport";
+import { importRegimesFiscaux } from "../../../services/regimesFiscauxServices";
+import { CheckCircle, XCircle, Upload } from "lucide-react";
+
+export default function ListeRegimesFiscaux() {
+  const [intitule, setIntitule] = useState("tous");
+  const [description, setDescription] = useState("tous");
+  const [etat, setEtat] = useState("tous");
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
+
+  const { data, loading } = useRegimesFiscaux(intitule, description, etat, page, size);
+  const [importMessage, setImportMessage] = useState<string | null>(null);
+
+  const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    const file = e.target.files[0];
+    const token = localStorage.getItem("jwt");
+    try {
+      const message = await importRegimesFiscaux(token, file);
+      setImportMessage(message);
+      setPage(0);
+    } catch (err: any) {
+      setImportMessage(err.message);
+    }
+  };
+
+  if (loading) return <p>Chargement...</p>;
+  if (!data) return <p>Aucune donnée</p>;
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold">Liste des régimes fiscaux</h2>
+        <div>
+          <input type="file" accept=".csv,.xlsx" id="file-upload" style={{ display: "none" }} onChange={handleImport}/>
+          <label htmlFor="file-upload">
+            <Button variant="secondary"><Upload size={16} /></Button>
+          </label>
+        </div>
+      </div>
+
+      {importMessage && (
+        <p className="text-sm text-[var(--text-secondary)]">{importMessage}</p>
+      )}
+
+      <DashboardCard title="">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <Input placeholder="Intitulé..." value={intitule === "tous" ? "" : intitule}onChange={(e) => { setIntitule(e.target.value || "tous"); setPage(0);}}/>
+          <Input placeholder="Description..." value={description === "tous" ? "" : description} onChange={(e) => { setDescription(e.target.value || "tous");setPage(0);}}/>
+          <Dropdown value={etat} onChange={(val) => { setEtat(val); setPage(0);}} options={[{ label: "Tous les états", value: "tous" },{ label: "Validé", value: "1" },{ label: "En attente", value: "0" }]}/>
+          <Input type="number" value={size} onChange={(e) => { const newSize = Number(e.target.value) || 10; setSize(newSize);setPage(0);}} className="w-auto text-center" style={{ maxWidth: "80px" }}/>
+        </div>
+      </DashboardCard>
+
+      <DashboardCard title="">
+        <Table headers={[
+          { label: "Intitulé", align: "left" },
+          { label: "Description", align: "left" },
+          { label: "État", align: "center" },
+          { label: "Action", align: "center" }
+        ]}>
+          {data.content.map((r) => (
+            <tr key={r.id} className="border-t border-[var(--border)]">
+              <td className="p-3">{r.intitule}</td>
+              <td className="p-3">{r.description}</td>
+              <td className="p-3"><span className={r.etatCouleur}>{r.etatIntitule}</span></td>
+              <td className="p-3">
+                <div className="flex gap-2">
+                {Number(r.etat) == 0 && Number(r.etat) !== -1 && (
+                  <>
+                    <Button variant="danger" className="px-2 py-2" ><XCircle size={16} /></Button>
+                    <Button variant="success" className="px-2 py-2"><CheckCircle size={16} /></Button>
+                  </>
+                )} 
+                </div>
+              </td>
+            </tr>
+          ))}
+        </Table>
+
+        <div className="mt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-[var(--text-secondary)]">
+            Page {data.number + 1} sur {data.totalPages}
+          </p>
+          <Pagination currentPage={data.number} totalPages={data.totalPages} onPageChange={setPage}/>
+        </div>
+      </DashboardCard>
+    </div>
+  );
+}

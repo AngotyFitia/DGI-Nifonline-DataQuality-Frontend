@@ -1,11 +1,11 @@
-import Tabs from "../../../../components/ui/Tabs";
-import { FileSpreadsheet, CheckCircle2 } from "lucide-react";
-import Button from "../../../../components/ui/Button";
-import DashboardCard from "../../../../components/ui/DashboardCard";
-import Alert from "../../../../components/ui/Alert";
 import { useRef, useState } from "react";
-import { useTerritoireImport } from "../../../../hooks/useImport";
-import type { ImportReport } from "../../../../types/import";
+import { FileSpreadsheet, CheckCircle2 } from "lucide-react";
+import Tabs from "../../../components/ui/Tabs";
+import Button from "../../../components/ui/Button";
+import Alert from "../../../components/ui/Alert";
+import DashboardCard from "../../../components/ui/DashboardCard";
+import { useTerritoireImport } from "../../../hooks/useImport";
+import type { ImportReport } from "../../../types/import";
 
 type FileKey = "provinces" | "regions" | "districts" | "communes";
 type FilesState = Record<FileKey, File | null>;

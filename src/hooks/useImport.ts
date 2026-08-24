@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { uploadTerritoireFile, GEO_ENDPOINTS } from "../services/territoiresService";
+import { getRegimesFiscaux } from "../services/regimesFiscauxServices";
+import type { RegimeFiscal, PageResponse } from "../types/import";
 import { uploadActivitesFile, ACTIVITES_ENDPOINTS } from "../services/activitesServices";
 
 export function useTerritoireImport() {
@@ -38,4 +40,27 @@ export function useActivitesImport() {
   };
 
   return { uploadAll, loading };
+}
+
+export function useRegimesFiscaux(intitule: string,description: string,etat: string,page: number,size: number) {
+  const [data, setData] = useState<PageResponse<RegimeFiscal> | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("jwt");
+        const result = await getRegimesFiscaux(token, intitule, description, etat, page, size);
+        setData(result);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false); 
+      }
+    };
+    fetchData();
+  }, [intitule, description, etat, page, size]);
+
+  return { data, loading, error };
 }

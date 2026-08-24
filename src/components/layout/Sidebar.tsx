@@ -1,13 +1,14 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Upload, Copy, Users, LayoutDashboard, Lightbulb, Brain, FileText, Settings, X, LogOut, Shield, Map, Briefcase } from "lucide-react";
+import { Upload, Copy, Users, LayoutDashboard, Lightbulb, Brain, FileText, Settings, X, LogOut, Shield, Map, Briefcase, Scale, ScrollText, Coins} from "lucide-react";
 import logo from "../../assets/images/logo.png";
 import Button from "../ui/Button";
 import { useUserRole } from "../../hooks/useRole";
 import { useState } from "react";
 export type SidebarNavId =|"stat-utilisateurs"| "stat-securite"| "stat"| "contribuables"| "analyses"| "doublons"
-                          | "recommandations"| "rapports"| "gestion-territoriale"| "gestion-activite" | "import-territoires"
-                          | "liste-territoires"| "import-activites"| "liste-activites"| "setting" | "utilisateurs"
-                          | "gestion-activite"| "imports";
+                          | "recommandations"| "rapports"| "import-territoires"| "import-activites"
+                          | "setting" | "utilisateurs"| "gestion-activite"| "imports"| "import-regimes-fiscaux"
+                          | "import-formes-juridiques" | "import-types-impots";
+
 type NavItem = {
   id: SidebarNavId;
   label: string;
@@ -17,19 +18,16 @@ type NavItem = {
 };
 
 const adminNav: NavItem[] = [
-  { id: "stat-utilisateurs", label: "Utilisateurs – Statistiques", icon: LayoutDashboard, to: "/admin/statistique-utilisateurs", children: [] },
-  { id: "stat-securite", label: "Sécurité – Statistiques", icon: Shield, to: "/admin/statistique-securite", children: [] },
+  { id: "stat-utilisateurs", label: "Statistiques utilisateurs", icon: LayoutDashboard, to: "/admin/statistique-utilisateurs", children: [] },
+  { id: "stat-securite", label: "Statistiques sécurité", icon: Shield, to: "/admin/statistique-securite", children: [] },
   { id: "utilisateurs", label: "Gestion des utilisateurs", icon: Users, to: "/admin/liste-utilisateurs", children: [] }, 
-  { id: "gestion-territoriale", label: "Gestion territoriale", icon: Map ,
+  { id: "imports", label: "Données de référence", icon: Upload ,
     children: [
-      { id: "import-territoires", label: "Import des territoires", icon: Upload, to: "/admin/territoire/import", children: [] },
-      { id: "liste-territoires", label: "Liste des territoires", icon: FileText, to: "/admin/territoire/liste", children: [] },
-    ],
-  },
-  { id: "gestion-activite", label: "Gestion des activités", icon: Briefcase ,
-    children: [
-      { id: "import-activites", label: "Import des activités", icon: Upload, to: "/admin/activites/import", children: [] },
-      { id: "liste-activites", label: "Liste des activités", icon: FileText, to: "/admin/activites/liste", children: [] },
+      { id: "import-territoires", label: "Territoires", icon: Map, to: "/admin/territoire/import", children: [] },
+      { id: "import-activites", label: "Activités", icon: Briefcase, to: "/admin/activites/import", children: [] },
+      { id: "import-regimes-fiscaux", label: "Régimes Fiscaux", icon: Scale, to: "/admin/regimes-fiscaux/liste", children: [] },
+      { id: "import-formes-juridiques", label: "Formes Juridiques", icon: ScrollText, to: "/admin/formes-juridiques/import", children: [] },
+      { id: "import-types-impots", label: "Types d'Impôts", icon: Coins, to: "/admin/types-impots/import", children: [] },
     ],
   },
 ];
