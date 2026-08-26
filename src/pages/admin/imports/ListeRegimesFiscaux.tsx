@@ -5,9 +5,11 @@ import Pagination from "../../../components/ui/Pagination";
 import Input from "../../../components/ui/Input";
 import Dropdown from "../../../components/ui/DropDown";
 import Button from "../../../components/ui/Button";
+import Alert from "../../../components/ui/Alert";
 import { useRegimesFiscaux } from "../../../hooks/useImport";
 import { importRegimesFiscaux } from "../../../services/regimesFiscauxServices";
 import { CheckCircle, XCircle, Upload } from "lucide-react";
+import type { ImportReport } from "../../../types/import";
 
 export default function ListeRegimesFiscaux() {
   const [intitule, setIntitule] = useState("tous");
@@ -17,18 +19,18 @@ export default function ListeRegimesFiscaux() {
   const [size, setSize] = useState(10);
 
   const { data, loading } = useRegimesFiscaux(intitule, description, etat, page, size);
-  const [importMessage, setImportMessage] = useState<string | null>(null);
+  const [importReport, setImportReport] = useState<ImportReport | null>(null);
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
     const token = localStorage.getItem("jwt");
     try {
-      const message = await importRegimesFiscaux(token, file);
-      setImportMessage(message);
+      const report: ImportReport = await importRegimesFiscaux(token, file);
+      setImportReport(report);
       setPage(0);
     } catch (err: any) {
-      setImportMessage(err.message);
+      setImportReport({ total: 0, success: 0, error: 0, message: err.message,status: "error", });
     }
   };
 
@@ -40,15 +42,17 @@ export default function ListeRegimesFiscaux() {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-semibold">Liste des régimes fiscaux</h2>
         <div>
-          <input type="file" accept=".csv,.xlsx" id="file-upload" style={{ display: "none" }} onChange={handleImport}/>
-          <label htmlFor="file-upload">
-            <Button variant="secondary"><Upload size={16} /></Button>
-          </label>
+        <input type="file" accept=".csv,.xlsx" id="file-upload" style={{ display: "none" }} onChange={handleImport}/>
+          <Button variant="secondary" onClick={() => document.getElementById("file-upload")?.click()}>
+            <Upload size={16} />
+          </Button>
         </div>
       </div>
 
-      {importMessage && (
-        <p className="text-sm text-[var(--text-secondary)]">{importMessage}</p>
+      {importReport && (
+        <div className="mt-4">
+          <Alert type={importReport.status} message={importReport.message} />
+        </div>
       )}
 
       <DashboardCard title="">
@@ -56,7 +60,7 @@ export default function ListeRegimesFiscaux() {
           <Input placeholder="Intitulé..." value={intitule === "tous" ? "" : intitule}onChange={(e) => { setIntitule(e.target.value || "tous"); setPage(0);}}/>
           <Input placeholder="Description..." value={description === "tous" ? "" : description} onChange={(e) => { setDescription(e.target.value || "tous");setPage(0);}}/>
           <Dropdown value={etat} onChange={(val) => { setEtat(val); setPage(0);}} options={[{ label: "Tous les états", value: "tous" },{ label: "Validé", value: "1" },{ label: "En attente", value: "0" }]}/>
-          <Input type="number" value={size} onChange={(e) => { const newSize = Number(e.target.value) || 10; setSize(newSize);setPage(0);}} className="w-auto text-center" style={{ maxWidth: "80px" }}/>
+          <p className="text-sm text-[var(--text-secondary)]">Page {data.number + 1} sur {data.totalPages}</p>
         </div>
       </DashboardCard>
 
@@ -86,11 +90,10 @@ export default function ListeRegimesFiscaux() {
           ))}
         </Table>
 
-        <div className="mt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-[var(--text-secondary)]">
-            Page {data.number + 1} sur {data.totalPages}
-          </p>
-          <Pagination currentPage={data.number} totalPages={data.totalPages} onPageChange={setPage}/>
+        <div className="flex justify-start items-center gap-4 mt-4">
+          <label className="text-sm font-medium text-[var(--text-primary)]">Nombre par page :</label>
+          <Input type="number" value={size} onChange={(e) => { const newSize = Number(e.target.value) || 10; setSize(newSize); setPage(0);}} className="w-auto text-center" style={{ maxWidth: "80px" }}/>
+          <Pagination currentPage={data.number} totalPages={data.totalPages} onPageChange={setPage} />
         </div>
       </DashboardCard>
     </div>
