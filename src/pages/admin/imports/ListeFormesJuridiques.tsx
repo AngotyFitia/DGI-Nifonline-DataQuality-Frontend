@@ -6,41 +6,42 @@ import Input from "../../../components/ui/Input";
 import Dropdown from "../../../components/ui/DropDown";
 import Button from "../../../components/ui/Button";
 import Alert from "../../../components/ui/Alert";
-import { useRegimesFiscaux } from "../../../hooks/useImport";
-import { importRegimesFiscaux } from "../../../services/regimesFiscauxService";
+import { useFormesJuridiques } from "../../../hooks/useImport";
+import { importFormesJuridiques } from "../../../services/formesJuridiquesService";
 import { CheckCircle, XCircle, Upload } from "lucide-react";
 import type { ImportReport } from "../../../types/import";
 
-export default function ListeRegimesFiscaux() {
-  const [intitule, setIntitule] = useState("tous");
-  const [description, setDescription] = useState("tous");
-  const [etat, setEtat] = useState("tous");
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState(10);
+export default function ListeFormesJuridiques() {
+    const [abreviation, setAbreviation] = useState("tous");
+    const [intitule, setIntitule] = useState("tous");
+    const [description, setDescription] = useState("tous");
+    const [etat, setEtat] = useState("tous");
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(10);
+    
+    const { data, loading } = useFormesJuridiques(abreviation, intitule, description, etat, page, size);
+    const [importReport, setImportReport] = useState<ImportReport | null>(null);
 
-  const { data, loading } = useRegimesFiscaux(intitule, description, etat, page, size);
-  const [importReport, setImportReport] = useState<ImportReport | null>(null);
+    const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files || e.target.files.length === 0) return;
+        const file = e.target.files[0];
+        const token = localStorage.getItem("jwt");
+        try {
+        const report: ImportReport = await importFormesJuridiques(token, file);
+        setImportReport(report);
+        setPage(0);
+        } catch (err: any) {
+        setImportReport({ total: 0, success: 0, error: 0, message: err.message,status: "error", });
+        }
+    };
 
-  const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-    const file = e.target.files[0];
-    const token = localStorage.getItem("jwt");
-    try {
-      const report: ImportReport = await importRegimesFiscaux(token, file);
-      setImportReport(report);
-      setPage(0);
-    } catch (err: any) {
-      setImportReport({ total: 0, success: 0, error: 0, message: err.message,status: "error", });
-    }
-  };
-
-  if (loading) return <p>Chargement...</p>;
-  if (!data) return <p>Aucune donnée</p>;
+    if (loading) return <p>Chargement...</p>;
+    if (!data) return <p>Aucune donnée</p>;
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-semibold">Liste des régimes fiscaux</h2>
+        <h2 className="text-2xl font-semibold">Liste des formes juridiques</h2>
         <div>
         <input type="file" accept=".csv,.xlsx" id="file-upload" style={{ display: "none" }} onChange={handleImport}/>
           <Button variant="secondary" onClick={() => document.getElementById("file-upload")?.click()}>
@@ -57,6 +58,7 @@ export default function ListeRegimesFiscaux() {
 
       <DashboardCard title="">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <Input placeholder="Abréviation..." value={abreviation === "tous" ? "" : abreviation}onChange={(e) => { setAbreviation(e.target.value || "tous"); setPage(0);}}/>
           <Input placeholder="Intitulé..." value={intitule === "tous" ? "" : intitule}onChange={(e) => { setIntitule(e.target.value || "tous"); setPage(0);}}/>
           <Input placeholder="Description..." value={description === "tous" ? "" : description} onChange={(e) => { setDescription(e.target.value || "tous");setPage(0);}}/>
           <Dropdown value={etat} onChange={(val) => { setEtat(val); setPage(0);}} options={[{ label: "Tous les états", value: "tous" },{ label: "Validé", value: "1" },{ label: "En attente", value: "0" }]}/>
@@ -65,6 +67,7 @@ export default function ListeRegimesFiscaux() {
 
       <DashboardCard title="">
         <Table headers={[
+          { label: "Abréviation", align: "left" },
           { label: "Intitulé", align: "left" },
           { label: "Description", align: "left" },
           { label: "État", align: "center" },
@@ -72,6 +75,7 @@ export default function ListeRegimesFiscaux() {
         ]}>
           {data.content.map((r) => (
             <tr key={r.id} className="border-t border-[var(--border)]">
+              <td className="p-3">{r.abreviation}</td>
               <td className="p-3">{r.intitule}</td>
               <td className="p-3">{r.description}</td>
               <td className="p-3"><span className={r.etatCouleur}>{r.etatIntitule}</span></td>

@@ -26,7 +26,7 @@ const adminNav: NavItem[] = [
       { id: "import-territoires", label: "Territoires", icon: Map, to: "/admin/territoire/import", children: [] },
       { id: "import-activites", label: "Activités", icon: Briefcase, to: "/admin/activites/import", children: [] },
       { id: "import-regimes-fiscaux", label: "Régimes Fiscaux", icon: Scale, to: "/admin/regimes-fiscaux/liste", children: [] },
-      { id: "import-formes-juridiques", label: "Formes Juridiques", icon: ScrollText, to: "/admin/formes-juridiques/import", children: [] },
+      { id: "import-formes-juridiques", label: "Formes Juridiques", icon: ScrollText, to: "/admin/formes-juridiques/liste", children: [] },
       { id: "import-types-impots", label: "Types d'Impôts", icon: Coins, to: "/admin/types-impots/import", children: [] },
     ],
   },

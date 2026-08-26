@@ -16,6 +16,7 @@ import ListeUtilisateurs from "../pages/admin/ListeUtilisateurs";
 import ImportTerritoires from "../pages/admin/imports/ImportTerritoires";
 import ImportActivites from "../pages/admin/imports/ImportActivites";
 import ListeRegimesFiscaux from "../pages/admin/imports/ListeRegimesFiscaux";
+import ListeFormesJuridiques from "../pages/admin/imports/ListeFormesJuridiques";
 
 export const router = createBrowserRouter([
   { path: "/", element: <Authentification />,},
@@ -31,6 +32,7 @@ export const router = createBrowserRouter([
       { path: "territoire/import", element: <ImportTerritoires /> },  
       { path: "activites/import", element: <ImportActivites /> },  
       { path: "regimes-fiscaux/liste", element: <ListeRegimesFiscaux /> },  
+      { path: "formes-juridiques/liste", element: <ListeFormesJuridiques /> },  
     ]
   },
   {

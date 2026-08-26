@@ -21,3 +21,13 @@ export interface RegimeFiscal {
     etatCouleur: string;
     etatIntitule: string;
 }
+
+export interface FormeJuridique {
+    id: number;
+    abreviation: string;
+    intitule: string;
+    description: string;
+    etat: string;
+    etatCouleur: string;
+    etatIntitule: string;
+}
