@@ -31,3 +31,12 @@ export interface FormeJuridique {
     etatCouleur: string;
     etatIntitule: string;
 }
+
+export interface TypeImpot {
+    id: number;
+    code: string;
+    intitule: string;
+    etat: string;
+    etatCouleur: string;
+    etatIntitule: string;
+}

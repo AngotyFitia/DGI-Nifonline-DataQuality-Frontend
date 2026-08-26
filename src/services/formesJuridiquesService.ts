@@ -6,7 +6,7 @@ export async function getFormesJuridiques(token: string | null, abreviation: str
       headers: { Authorization: `Bearer ${token}` },
     }
   );
-  if (!response.ok) throw new Error("Erreur API régimes fiscaux");
+  if (!response.ok) throw new Error("Erreur API formes juridiques");
   return response.json();
 }
 
@@ -24,7 +24,7 @@ export async function importFormesJuridiques(token: string | null,file: File): P
   );
 
   if (!response.ok) {
-    throw new Error("Erreur import régimes fiscaux");
+    throw new Error("Erreur import formes juridiques");
   }
   return response.json() as Promise<ImportReport>;
 }
