@@ -5,6 +5,7 @@ import { getFormesJuridiques } from "../services/formesJuridiquesService";
 import { getTypesImpots } from "../services/typesImpotsService";
 import type { RegimeFiscal, FormeJuridique, TypeImpot, PageResponse } from "../types/import";
 import { uploadActivitesFile, ACTIVITES_ENDPOINTS } from "../services/activitesServices";
+import { uploadCentresFile, CENTRES_ENDPOINTS } from "../services/centreService";
 
 export function useTerritoireImport() {
   const [loading, setLoading] = useState(false);
@@ -111,5 +112,24 @@ export function useTypesImpots(code: string, intitule: string, etat: string,page
   }, [code, intitule, etat, page, size]);
 
   return { data, loading, error };
+}
+
+
+export function useCentresImport() {
+  const [loading, setLoading] = useState(false);
+
+  const uploadAll = async (files: Record<string, File | null>, token?: string) => {
+    setLoading(true);
+    try {
+      const results: Record<string, any> = {};
+      if (files.coordonnees) results.coordonnees = await uploadCentresFile(CENTRES_ENDPOINTS.coordonnees, files.coordonnees, token);
+      if (files.centres) results.centres = await uploadCentresFile(CENTRES_ENDPOINTS.centres, files.centres, token);
+      return results;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { uploadAll, loading };
 }
 

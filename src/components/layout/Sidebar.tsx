@@ -1,5 +1,5 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Upload, Copy, Users, LayoutDashboard, Lightbulb, Brain, FileText, Settings, X, LogOut, Shield, Map, Briefcase, Scale, ScrollText, Coins} from "lucide-react";
+import { Upload, Copy, Users, LayoutDashboard, Lightbulb, Brain, FileText, Settings, X, LogOut, Shield, Map, Briefcase, Scale, ScrollText, Coins, Building} from "lucide-react";
 import logo from "../../assets/images/logo.png";
 import Button from "../ui/Button";
 import { useUserRole } from "../../hooks/useRole";
@@ -7,7 +7,7 @@ import { useState } from "react";
 export type SidebarNavId =|"stat-utilisateurs"| "stat-securite"| "stat"| "contribuables"| "analyses"| "doublons"
                           | "recommandations"| "rapports"| "import-territoires"| "import-activites"
                           | "setting" | "utilisateurs"| "gestion-activite"| "imports"| "import-regimes-fiscaux"
-                          | "import-formes-juridiques" | "import-types-impots";
+                          | "import-formes-juridiques" | "import-types-impots"|"import-centres-gestionnaires";
 
 type NavItem = {
   id: SidebarNavId;
@@ -28,6 +28,7 @@ const adminNav: NavItem[] = [
       { id: "import-regimes-fiscaux", label: "Régimes Fiscaux", icon: Scale, to: "/admin/regimes-fiscaux/liste", children: [] },
       { id: "import-formes-juridiques", label: "Formes Juridiques", icon: ScrollText, to: "/admin/formes-juridiques/liste", children: [] },
       { id: "import-types-impots", label: "Types d'Impôts", icon: Coins, to: "/admin/types-impots/liste", children: [] },
+      { id: "import-centres-gestionnaires", label: "Centres Gestionnaires", icon: Building, to: "/admin/centres-gestionnaires/import", children: [] },
     ],
   },
 ];

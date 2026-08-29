@@ -4,29 +4,29 @@ import Button from "../../../components/ui/Button";
 import DashboardCard from "../../../components/ui/DashboardCard";
 import Alert from "../../../components/ui/Alert";
 import { useRef, useState } from "react";
-import { useActivitesImport } from "../../../hooks/useImport";
+import { useCentresImport } from "../../../hooks/useImport";
 import type { ImportReport } from "../../../types/import";
 
-type FileKey = "secteurs" | "activites";
+type FileKey = "coordonnees" | "centres";
 type FilesState = Record<FileKey, File | null>;
 
-export default function ImportActivites() {
+export default function ImportCentresGestionnaires() {
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const [files, setFiles] = useState<FilesState>({
-    secteurs: null,
-    activites: null,
+    coordonnees: null,
+    centres: null,
   });
 
-  const { uploadAll, loading } = useActivitesImport();
-  const [reports, setReports] = useState<Record<FileKey, ImportReport | null>>({secteurs: null, activites: null,});
+  const { uploadAll, loading } = useCentresImport();
+  const [reports, setReports] = useState<Record<FileKey, ImportReport | null>>({coordonnees: null, centres: null,});
   const handleFileChangeLocal = ( e: React.ChangeEvent<HTMLInputElement>,key: FileKey) => {
     const file = e.target.files?.[0] || null;
     setFiles((prev) => ({ ...prev, [key]: file }));
   };
 
   const tabs = [
-    { key: "secteurs", label: "Secteurs" },
-    { key: "activites", label: "Activités" },
+    { key: "coordonnees", label: "Coordonnnees" },
+    { key: "centres", label: "Centres" },
   ] as const;
 
   const renderUpload = (key: FileKey, label: string) => {
@@ -59,7 +59,7 @@ export default function ImportActivites() {
       const results = await uploadAll(files, token);
   
       setReports(results);
-      setFiles({ secteurs: null, activites: null,});
+      setFiles({ coordonnees: null, centres: null,});
       Object.keys(inputRefs.current).forEach((key) => {
         if (inputRefs.current[key]) {
           inputRefs.current[key]!.value = "";
@@ -68,18 +68,18 @@ export default function ImportActivites() {
   
     } catch (err: any) {
       console.error(err);
-      setReports({secteurs: null, activites: null,});
+      setReports({coordonnees: null, centres: null,});
     }
   };
   
 
   return (
     <div className="space-y-6">
-      <DashboardCard title="Import des activités économiques">
+      <DashboardCard title="Import des centres gestionnaires">
         <Tabs tabs={tabsContent} />
         <div className="flex justify-end gap-3">
           <Button variant="secondary">Annuler</Button>
-          <Button variant="primary" onClick={handleImport} disabled={ !files.secteurs && !files.activites} >
+          <Button variant="primary" onClick={handleImport} disabled={ !files.coordonnees && !files.centres} >
             {loading ? "Import en cours..." : "Importer tout"}
           </Button>
         </div>
@@ -98,7 +98,7 @@ export default function ImportActivites() {
 
       <DashboardCard title="Informations système">
         <Alert type="info" message="Chaque entité peut être importée via un fichier séparé"/>
-        <Alert type="warning" message="Les données sont liées hiérarchiquement (Secteurs → Activités)"/>
+        <Alert type="warning" message="Les données sont liées hiérarchiquement (Coordonnnees → Centres)"/>
       </DashboardCard>
     </div>
   );
