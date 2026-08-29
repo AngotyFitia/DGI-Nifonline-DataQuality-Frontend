@@ -181,3 +181,8 @@ Ce document retrace l'évolution du projet DGI et les principales contributions 
   - Renforcement de securité
   
 - Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/16
+
+
+## PR #18 - Pages d'import des données de base
+  - Intégration de la fonctionnalité de gestion des imports 
+- Lien : https://github.com/AngotyFitia/DGI-DataQuality-Frontend/pull/18
