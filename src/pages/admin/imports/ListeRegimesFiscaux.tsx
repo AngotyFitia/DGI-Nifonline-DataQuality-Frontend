@@ -18,7 +18,8 @@ export default function ListeRegimesFiscaux() {
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
 
-  const { data, loading } = useRegimesFiscaux(intitule, description, etat, page, size);
+  const token = localStorage.getItem("jwt") || "";
+  const { data, isLoading } = useRegimesFiscaux(token, intitule, description, etat, page, size);
   const [importReport, setImportReport] = useState<ImportReport | null>(null);
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +35,7 @@ export default function ListeRegimesFiscaux() {
     }
   };
 
-  if (loading) return <p>Chargement...</p>;
+  if (isLoading) return <p>Chargement...</p>;
   if (!data) return <p>Aucune donnée</p>;
 
   return (
@@ -51,9 +52,24 @@ export default function ListeRegimesFiscaux() {
 
       {importReport && (
         <div className="mt-4">
-          <Alert type={importReport.status} message={importReport.message} />
+          <Alert
+            type={importReport.error > 0 ? "error" : "success"}
+            message={
+              <>
+                <p>
+                  {`Import régimes fiscaux : ${importReport.success}/${importReport.total} réussis, ${importReport.error} erreurs.`}
+                </p>
+                <ul className="list-disc ml-4">
+                  {importReport.message.split("\n").filter(Boolean).map((line, i) => (
+                    <li key={i}>{line}</li>
+                  ))}
+                </ul>
+              </>
+            }
+          />
         </div>
       )}
+
 
       <DashboardCard title="">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3">

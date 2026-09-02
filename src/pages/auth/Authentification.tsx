@@ -5,6 +5,7 @@ import Button from "../../components/ui/Button";
 import AuthLayout from "../../components/auth/AuthLayout";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useTheme } from "../../context/ThemeContext";
+import type { GlobalError } from "../../types/globalError";
 import { useAuth } from "../../hooks/useAuth";
 import Toast from "../../components/ui/Toast";
 import Alert from "../../components/ui/Alert";
@@ -16,7 +17,7 @@ export default function Authentification() {
   const [motDePasse, setMotDePasse] = useState("");
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { handleLogin, errors } = useAuth();
+  const { handleLogin, errors }: { handleLogin: Function; errors: { email?: string[]; motDePasse?: string[]; global?: GlobalError[]; recaptchaToken?: string[] } } = useAuth();
   const location = useLocation();
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   console.log("Errors:", errors);

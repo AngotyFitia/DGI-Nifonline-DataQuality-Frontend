@@ -1,6 +1,6 @@
 type AlertProps = {
   type?: "success" | "error" | "warning" | "info";
-  message: string;
+  message: React.ReactNode;
 };
 
 export default function Alert({ type = "info", message }: AlertProps) {

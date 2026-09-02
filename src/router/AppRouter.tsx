@@ -19,6 +19,7 @@ import ListeRegimesFiscaux from "../pages/admin/imports/ListeRegimesFiscaux";
 import ListeFormesJuridiques from "../pages/admin/imports/ListeFormesJuridiques";
 import ListeTypesImpots from "../pages/admin/imports/ListeTypesImpots";
 import ImportCentresGestionnaires from "../pages/admin/imports/ImportCentresGestionnaires";
+// import ListePersonnesPhysiques from "../pages/chef/imports/ListePersonnesPhysiques";
 
 export const router = createBrowserRouter([
   { path: "/", element: <Authentification />,},
@@ -37,6 +38,15 @@ export const router = createBrowserRouter([
       { path: "formes-juridiques/liste", element: <ListeFormesJuridiques /> },  
       { path: "types-impots/liste", element: <ListeTypesImpots /> },  
       { path: "centres-gestionnaires/import", element: <ImportCentresGestionnaires /> },  
+    ]
+  },
+  {
+    path: "/chef", 
+    element: <MainLayout />,
+    children: [
+      { path: "statistique-contribuables", element: <DashboardUtilisateurs /> },  
+      { path: "statistique-anomalies", element: <DahsboardSecurite /> },  
+      // { path: "personnes-physiques/import", element: <ListePersonnesPhysiques /> },  
     ]
   },
   {

@@ -1,82 +1,54 @@
-import { useState, useEffect } from "react";
-import { getUtilisateurs, updateEtatUtilisateur, getUtilisateurKpi, getInscriptionsParMoisRange } from "../services/utilisateurService";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {getUtilisateurs, updateEtatUtilisateur, getUtilisateurKpi, getInscriptionsParMoisRange,} from "../services/utilisateurService";
 import type { Utilisateur, UtilisateurKpi } from "../types/utilisateur";
 
-export function useUtilisateurs(
-  token: string,
-  profil: string,
-  etat: string,
-  email: string,
-  page: number,
-  size: number
-) {
-  const [utilisateurs, setUtilisateurs] = useState<Utilisateur[]>([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export function useUtilisateurs(token: string, profil: string, etat: string, email: string, page: number, size: number) {
+  const queryClient = useQueryClient();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["utilisateurs", profil, etat, email, page, size],
+    queryFn: () => getUtilisateurs(token, profil, etat, email, page, size),
+    placeholderData: (prev) => prev, 
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getUtilisateurs(token, profil, etat, email, page, size);
-        setUtilisateurs(data.content);
-        setTotalPages(data.totalPages);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [token, profil, etat, email, page, size]);
+  const mutation = useMutation({
+    mutationFn: (vars: { id: number; etat: number }) =>
+      updateEtatUtilisateur(vars.id, vars.etat, token),
+    onSuccess: (updated) => {
+      queryClient.setQueryData(
+        ["utilisateurs", profil, etat, email, page, size],
+        (oldData: any) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            content: oldData.content.map((u: Utilisateur) =>
+              u.id === updated.id ? updated : u
+            ),
+          };
+        }
+      );
+    },
+  });
 
-  const updateEtat = async (id: number, etat: number) => {
-    try {
-      const updated = await updateEtatUtilisateur(id, etat, token);
-      setUtilisateurs(prev => prev.map(u => u.id === updated.id ? updated : u));
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
-
-  return { utilisateurs, totalPages, loading, error, updateEtat };
+  return { utilisateurs: data?.content ?? [], totalPages: data?.totalPages ?? 0, loading: isLoading, error, updateEtat: mutation.mutate,};
 }
 
-
 export function useUtilisateurKpi(token: string) {
-  const [kpi, setKpi] = useState<UtilisateurKpi | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading, error } = useQuery<UtilisateurKpi>({
+    queryKey: ["utilisateur-kpi"],
+    queryFn: () => getUtilisateurKpi(token),
+    staleTime: 1000 * 60 * 5, // cache 5 minutes
+    retry: 1, // réessaye une fois si erreur
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getUtilisateurKpi(token);
-        setKpi(data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [token]);
-
-  return { kpi, loading, error };
+  return { kpi: data ?? null, loading: isLoading, error };
 }
 
 export function useInscriptionsParMoisRange(token: string, start: string, end: string) {
-  const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["inscriptions-range", start, end],
+    queryFn: () => getInscriptionsParMoisRange(token, start, end),
+    staleTime: 1000 * 60 * 2, 
+  });
 
-  useEffect(() => {
-    getInscriptionsParMoisRange(token, start, end)
-      .then(setData)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [token, start, end]);
-
-  return { data, loading, error };
+  return { data: data ?? [], loading: isLoading, error };
 }
-

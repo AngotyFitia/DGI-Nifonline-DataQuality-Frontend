@@ -18,7 +18,7 @@ export default function Inscription() {
   const profils = useProfils();
   const [profilId, setProfilId] = useState("");
 
-  const { handleRegister, errors } = useRegister();
+  const { handleRegister, errors }: { handleRegister: Function; errors: { email?: string[]; motDePasse?: string[]; confirmPassword?: string[]; idProfil?: string[]; recaptchaToken?: string[]; global?: string[] } } = useRegister();
 
   return (
     <AuthLayout>
@@ -48,7 +48,7 @@ export default function Inscription() {
         </div>
         <div className="mb-5">
           <label className="text-sm text-[var(--text-secondary)] font-[Montserrat]">Rôle</label>
-          <Dropdown value={profilId} onChange={setProfilId} options={profils.map(profil => ({ ...profil, value: String(profil.value) }))} />
+          <Dropdown value={profilId} onChange={setProfilId} options={profils.profils.map(profil => ({ ...profil, value: String(profil.value) }))} />
           {errors.idProfil && errors.idProfil.map((err, i) => (
               <p key={i} className="text-red-500 text-sm">{err}</p>
           ))}
@@ -65,7 +65,7 @@ export default function Inscription() {
           <p key={i} className="text-red-500 text-sm text-center">{err}</p>
         ))}
         
-        <Button variant="primary" className="w-full py-3 text-base font-[Montserrat]" onClick={() => handleRegister(email, motDePasse, confirmPassword, captchaToken, profilId) }>S'inscrire</Button>
+        <Button variant="primary" className="w-full py-3 text-base font-[Montserrat]"  onClick={() => handleRegister({email,motDePasse,confirmPassword,captchaToken,idProfil: profilId,})}>S'inscrire</Button>
         <p className="text-sm text-center text-[var(--text-secondary)] mt-4 font-[Montserrat]">Vous avez déjà un compte ?{" "}
           <span onClick={() => window.location.href = "/"} className="text-[var(--primary)] cursor-pointer hover:underline">Se connecter</span>
         </p>

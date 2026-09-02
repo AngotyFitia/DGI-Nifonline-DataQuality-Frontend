@@ -11,57 +11,79 @@ async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<Re
     throw new Error("Non autorisé : token invalide ou expiré");
   }
 
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Erreur serveur (${res.status}): ${text}`);
+  }
+
   return res;
 }
 
-export async function register(data: AuthRequest): Promise<Response> {
-  return fetch(`${BASE_URL}/auth/register`, {
+export async function login(data: AuthRequest) {
+  const res = await fetch(`${BASE_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
+
+  let json: any = null;
+  try {
+    json = await res.json();
+  } catch {}
+
+  if (!res.ok) {
+    const error: any = new Error("Erreur lors de la connexion");
+    error.errors = json?.errors || {};
+    throw error;
+  }
+
+  return json;
 }
 
-export async function login(data: AuthRequest): Promise<Response> {
-  return fetch(`${BASE_URL}/auth/login`, {
+
+export async function register(data: AuthRequest) {
+  console.log("Payload envoyé:", data);
+  const res = await fetch(`${BASE_URL}/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
+
+  let json: any = null;
+  try {
+    json = await res.json();
+  } catch {}
+
+  if (!res.ok) {
+    const error: any = new Error(json?.message || "Erreur lors de l'inscription");
+    error.errors = json?.errors || { global: [json?.message] };
+    throw error;
+  }
+
+  return json;
 }
 
 export async function logout(token: string) {
-  const res = await fetchWithAuth(`${BASE_URL}/auth/logout`, {
+  await fetchWithAuth(`${BASE_URL}/auth/logout`, {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${token}`,
       "Content-Type": "application/json",
     },
   });
-  if (!res.ok) throw new Error("Erreur lors de la déconnexion");
 }
 
 export async function getCurrentUser(token: string): Promise<User> {
-  const response = await fetchWithAuth(`${BASE_URL}/auth/me`, {
+  const res = await fetchWithAuth(`${BASE_URL}/auth/me`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  if (response.status === 401) {
-    localStorage.removeItem("jwt");
-    window.location.href = "/"; 
-    throw new Error("Non autorisé : token invalide ou expiré");
-  }
-  return response.json();
+  return res.json();
 }
 
 export async function getSecuriteKpi(token: string) {
   const res = await fetchWithAuth(`${BASE_URL}/api/utilisateurs/kpi-securite`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  if (res.status === 401) {
-    localStorage.removeItem("jwt");
-    window.location.href = "/"; 
-    throw new Error("Non autorisé : token invalide ou expiré");
-  }
   return res.json();
 }
 
@@ -69,11 +91,5 @@ export async function getAlertesSecurite(token: string) {
   const res = await fetchWithAuth(`${BASE_URL}/api/utilisateurs/alertes-securite`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  if (res.status === 401) {
-    localStorage.removeItem("jwt");
-    window.location.href = "/"; 
-    throw new Error("Non autorisé : token invalide ou expiré");
-  }
-  if (!res.ok) throw new Error("Erreur serveur");
   return res.json();
 }

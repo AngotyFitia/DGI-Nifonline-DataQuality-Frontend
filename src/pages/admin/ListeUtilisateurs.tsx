@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type JSXElementConstructor, type Key, type ReactElement, type ReactNode, type ReactPortal } from "react";
 import DashboardCard from "../../components/ui/DashboardCard";
 import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
@@ -25,7 +25,7 @@ export default function ListeUtilisateurs() {
   const { utilisateurs, totalPages, loading, error, updateEtat } = useUtilisateurs( token, filterProfil, filterEtat, filterEmail, page, size);
   const profilOptions = [
     { label: "Tous les profils", value: "tous" },
-    ...profils.map((p) => ({ label: p.label, value: p.label }))
+    ...profils.profils.map((p) => ({ label: p.label, value: p.label }))
   ];
 
   const etatOptions = [
@@ -36,7 +36,7 @@ export default function ListeUtilisateurs() {
   ];
 
   if (loading ) return <p>Chargement...</p>; 
-  if (error) return <p className="text-red-500">{error}</p>;
+  if (error) return <p className="text-red-500">{error.message}</p>;
 
   return (
     <div className="space-y-6">
@@ -54,7 +54,7 @@ export default function ListeUtilisateurs() {
          <p className="text-center text-[var(--text-secondary)]">Aucun utilisateur</p>
         ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {utilisateurs.map((u) => (
+          {utilisateurs.map((u: { id: Key; email: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode>>; profil: { intitule: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode>>; }; etatCouleur: string; etatIntitule: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode>>; etat: any; }) => (
             <Card key={u.id}>
               <p className="font-semibold text-[var(--text-primary)]">{u.email}</p>
               <p className="text-sm text-[var(--text-secondary)]">Profil : {u.profil.intitule}</p>
@@ -100,7 +100,7 @@ export default function ListeUtilisateurs() {
           <DashboardCard title="Confirmer activation">
             <p>Voulez-vous activer l’utilisateur <b>{selected.email}</b> ?</p>
             <div className="flex gap-2 mt-4">
-              <Button variant="success" onClick={async () => { await updateEtat(selected.id, 10);setSelected(null);}}>
+              <Button variant="success" onClick={async () => { updateEtat({ id: selected.id, etat: 10 }); setSelected(null); }}>
                 Oui, activer
               </Button>
               <Button variant="secondary" onClick={() => setSelected(null)}>Annuler</Button>
@@ -112,7 +112,7 @@ export default function ListeUtilisateurs() {
           <DashboardCard title="Confirmer désactivation">
             <p>Voulez-vous désactiver l’utilisateur <b>{selected.email}</b> ?</p>
             <div className="flex gap-2 mt-4">
-              <Button variant="danger" onClick={async () => { await updateEtat(selected.id, 5); setSelected(null);}}>
+              <Button variant="danger" onClick={async () => { updateEtat({ id: selected.id, etat: 5 }); setSelected(null);}}>
                 Oui, désactiver
               </Button>
               <Button variant="secondary" onClick={() => setSelected(null)}>Annuler</Button>

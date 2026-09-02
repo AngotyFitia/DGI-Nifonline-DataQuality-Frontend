@@ -1,36 +1,23 @@
-import { useState, useEffect } from "react";
-import { getProfilKpi, getProfils } from "../services/profilService";
+import { useQuery } from "@tanstack/react-query";
+import { getProfils, getProfilKpi } from "../services/profilService";
 
 export function useProfils() {
-  const [profils, setProfils] = useState<{ label: string; value: number }[]>([]);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["profils"],
+    queryFn: getProfils,
+    staleTime: 1000 * 60 * 10,
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getProfils();
-        setProfils(data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchData();
-  }, []);
-
-  return profils;
+  return { profils: data ?? [], loading: isLoading, error,};
 }
 
 export function useProfilKpi(token: string) {
-  const [kpi, setKpi] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["profil-kpi"],
+    queryFn: () => getProfilKpi(token),
+    staleTime: 1000 * 60 * 5,
+    retry: 1,
+  });
 
-  useEffect(() => {
-    getProfilKpi(token)
-      .then(setKpi)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [token]);
-
-  return { kpi, loading, error };
+  return { kpi: data ?? null, loading: isLoading,error,};
 }
-

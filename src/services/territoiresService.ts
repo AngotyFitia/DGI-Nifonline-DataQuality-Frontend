@@ -1,16 +1,41 @@
-export async function uploadTerritoireFile( endpoint: string, file: File,token?: string): Promise<any> {
-    const formData = new FormData();
-    formData.append("file", file);
+import type { UploadResponse} from '../types/import';
 
-    const res = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, { method: "POST", headers: token ? { Authorization: `Bearer ${token}` } : undefined, body: formData,});
-    if (res.status === 401) {
-      localStorage.removeItem("jwt");
-      window.location.href = "/";
-      throw new Error("Non autorisé : token invalide ou expiré");
-    }
-    return res.json();
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<Response> {
+  const res = await fetch(url, options);
+  if (res.status === 401) {
+    localStorage.removeItem("jwt");
+    window.location.href = "/";
+    throw new Error("Non autorisé : token invalide ou expiré");
+  }
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Erreur serveur (${res.status}): ${text}`);
+  }
+  return res;
 }
-  
-export const GEO_ENDPOINTS = { provinces: "/import/provinces", regions: "/import/regions", districts: "/import/districts", communes: "/import/communes",};
 
+export async function uploadFile(endpoint: string,file: File,token?: string): Promise<UploadResponse> {
+  const formData = new FormData();
+  formData.append("file", file);
+  const res = await fetchWithAuth(`${BASE_URL}${endpoint}`, {
+    method: "POST",
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    body: formData,
+  });
 
+  const json = await res.json();
+
+  if (!res.ok) {
+    throw json;
+  }
+  return res.json();
+}
+
+export const GEO_ENDPOINTS = {
+  provinces: "/import/provinces",
+  regions: "/import/regions",
+  districts: "/import/districts",
+  communes: "/import/communes",
+};

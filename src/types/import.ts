@@ -13,6 +13,12 @@ export interface PageResponse<T> {
     size: number;
 }
 
+export type UploadResponse = {
+    success: boolean;
+    message: string;
+    [key: string]: any;
+};
+
 export interface RegimeFiscal {
     id: number;
     intitule: string;

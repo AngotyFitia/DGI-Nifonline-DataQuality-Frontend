@@ -1,6 +1,7 @@
 import DashboardCard from "../../components/ui/DashboardCard";
 import Card from "../../components/ui/Card";
 import { useSecuriteKpi, useAlertesSecurite } from "../../hooks/useSecurite";
+import type { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
 
 export default function DahsboardSecurite() {
   const token = localStorage.getItem("jwt") || "";
@@ -10,7 +11,7 @@ export default function DahsboardSecurite() {
   if (secLoading || alertLoading)
     return <p>Chargement...</p>;
   if (secError || alertError )
-    return <p className="text-red-500">{secError || alertError}</p>;
+    return <p className="text-red-500">{(secError || alertError)?.toString()}</p>;
 
   return (
     <div className="space-y-6">
@@ -34,7 +35,7 @@ export default function DahsboardSecurite() {
           <p>Aucune alerte</p>
         ) : (
           <ul className="list-disc pl-6">
-            {alertes.map((a) => (
+            {alertes.map((a: { id: Key; email: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode>>; tentativesEchouees: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode>>; }) => (
               <li key={a.id}>
                 {a.email} — {a.tentativesEchouees} tentatives échouées
               </li>

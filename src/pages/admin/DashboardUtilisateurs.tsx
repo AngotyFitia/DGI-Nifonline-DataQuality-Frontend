@@ -6,6 +6,12 @@ import { useProfilKpi } from "../../hooks/useProfils";
 import GenericPieChart from "../../components/ui/GenericPieChart";
 import QualityChart from "../../components/ui/QualityChart";
 
+function getErrorMessage(err: unknown): string {
+  if (!err) return "";
+  if (err instanceof Error) return err.message;
+  return String(err);
+}
+
 export default function DashboardUtilisateurs() {
   const token = localStorage.getItem("jwt") || "";
   const { kpi, loading, error } = useUtilisateurKpi(token);
@@ -17,22 +23,20 @@ export default function DashboardUtilisateurs() {
   const { data: inscriptionsData, loading: insLoading, error: insError } =
     useInscriptionsParMoisRange(token, startDate, endDate);
 
-  if (loading || profilLoading || insLoading)
+  if (loading || profilLoading || insLoading) {
     return <p>Chargement...</p>;
-  if (error || profilError || insError)
-    return <p className="text-red-500">{error || profilError || insError}</p>;
+  }
 
-  const profilChartData = profilKpi
-    ? Object.entries(profilKpi.repartition).map(([name, value]) => ({
-        name,
-        value: value as number,
-      }))
-    : [];
+  if (error || profilError || insError) {
+    return (
+      <p className="text-red-500">
+        {getErrorMessage(error) || getErrorMessage(profilError) || getErrorMessage(insError)}
+      </p>
+    );
+  }
 
-  const inscriptionsChartData = inscriptionsData.map((d) => ({
-    month: d.month,
-    score: d.count,
-  }));
+  const profilChartData = profilKpi? Object.entries(profilKpi.repartition).map(([name, value]) => ({name,value: value as number,})): [];
+  const inscriptionsChartData = inscriptionsData.map((d: { month: any; count: any; }) => ({ month: d.month, score: d.count,}));
 
   return (
     <div className="space-y-6">
@@ -59,32 +63,22 @@ export default function DashboardUtilisateurs() {
         </DashboardCard>
       )}
 
-      {/* Charts côte à côte */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <DashboardCard title="Évolution des inscriptions">
+        <DashboardCard title="Évolution des inscriptions">
           <div className="flex gap-4 mb-4">
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="border rounded px-2 py-1 bg-[var(--bg-secondary)] text-[var(--text-primary)]"
-            />
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="border rounded px-2 py-1 bg-[var(--bg-secondary)] text-[var(--text-primary)]"
-            />
+            <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="border rounded px-2 py-1 bg-[var(--bg-secondary)] text-[var(--text-primary)]"/>
+            <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="border rounded px-2 py-1 bg-[var(--bg-secondary)] text-[var(--text-primary)]"/>
           </div>
 
           {insLoading ? (
             <p>Chargement...</p>
           ) : insError ? (
-            <p className="text-red-500">{insError}</p>
+            <p className="text-red-500">{getErrorMessage(insError)}</p>
           ) : (
             <QualityChart data={inscriptionsChartData} />
           )}
         </DashboardCard>
+
         {profilKpi && (
           <DashboardCard title="Répartition par profil">
             <GenericPieChart data={profilChartData} />

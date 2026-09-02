@@ -4,7 +4,7 @@ import Tabs from "../../../components/ui/Tabs";
 import Button from "../../../components/ui/Button";
 import Alert from "../../../components/ui/Alert";
 import DashboardCard from "../../../components/ui/DashboardCard";
-import { useTerritoireImport } from "../../../hooks/useImport";
+import { useUploadTerritoires } from "../../../hooks/useImport";
 import type { ImportReport } from "../../../types/import";
 
 type FileKey = "provinces" | "regions" | "districts" | "communes";
@@ -19,7 +19,10 @@ export default function ImportTerritoires() {
     communes: null,
   });
 
-  const { uploadAll, loading } = useTerritoireImport();
+  const token = localStorage.getItem("jwt") || undefined;
+  const useTerritoireMutation = useUploadTerritoires(token);
+  const { mutate: uploadAll, status } = useTerritoireMutation
+  const loading = status === "pending";
   const [reports, setReports] = useState<Record<FileKey, ImportReport | null>>({provinces: null, regions: null, districts: null, communes: null,});
   const handleFileChangeLocal = ( e: React.ChangeEvent<HTMLInputElement>,key: FileKey) => {
     const file = e.target.files?.[0] || null;
@@ -57,23 +60,41 @@ export default function ImportTerritoires() {
     content: renderUpload(t.key, t.label),
   }));
 
-  const handleImport = async () => {
-    try {
-      const token = localStorage.getItem("jwt") || undefined;
-      const results = await uploadAll(files, token);
-  
-      setReports(results);
-      setFiles({ provinces: null, regions: null, districts: null, communes: null,});
-      Object.keys(inputRefs.current).forEach((key) => {
-        if (inputRefs.current[key]) {
-          inputRefs.current[key]!.value = "";
-        }
+  const handleImport = () => {
+    Object.entries(files)
+      .filter(([_, file]) => file !== null)
+      .forEach(([type, file]) => {
+        uploadAll(
+          { type: type as FileKey, file: file! },
+          {
+            onSuccess: (data) => {
+              console.log("Réponse backend:", data);
+              setReports((prev) => ({
+                ...prev,
+                [type]: data,
+              }));
+            },       
+            onError: (err: any) => {
+              setReports((prev) => ({
+                ...prev,
+                [type]: {
+                  total: err.total ?? 0,
+                  success: err.success ?? 0,
+                  error: err.error ?? 0,
+                  message: err.message ?? "Erreur inconnue",
+                },
+              }));
+            },                      
+          }
+        );
       });
   
-    } catch (err: any) {
-      console.error(err);
-      setReports({provinces: null, regions: null, districts: null, communes: null,});
-    }
+    setFiles({ provinces: null, regions: null, districts: null, communes: null });
+    Object.keys(inputRefs.current).forEach((key) => {
+      if (inputRefs.current[key]) {
+        inputRefs.current[key]!.value = "";
+      }
+    });
   };
   
 
@@ -87,16 +108,32 @@ export default function ImportTerritoires() {
             {loading ? "Import en cours..." : "Importer tout"}
           </Button>
         </div>
-      <div className="mt-4 space-y-3">
-        {tabs.map((t) => {
-          const report = reports[t.key];
-          if (!report) return null;
-          const type = report.error > 0 ? "error" : "success";
-          const msg = `Import ${t.label} : ${report.success}/${report.total} réussis, ${report.error} erreurs.
-          Détails : ${report.message}`;
-          return <Alert key={t.key} type={type} message={msg} />;
-        })}
-      </div>
+        <div className="mt-4 space-y-3">
+          {tabs.map((t) => {
+            const report = reports[t.key];
+            if (!report) return null;
+            console.log("Nombre d'erreur"+Number(report.error))
+            const type = Number(report.error) > 0 ? "error" : "success";
+            const lines = report.message.split("\n").filter(Boolean);
+
+            return (
+              <Alert key={t.key} type={type}
+                message={
+                  <>
+                    <p>
+                      {`Import ${t.label} : ${report.success}/${report.total} réussis, ${report.error} erreurs.`}
+                    </p>
+                    <ul className="list-disc ml-4">
+                      {lines.map((line, i) => (
+                        <li key={i}>{line}</li>
+                      ))}
+                    </ul>
+                  </>
+                }
+              />
+            );
+          })}
+        </div>
 
       </DashboardCard>
 

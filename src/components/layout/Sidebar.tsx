@@ -1,5 +1,5 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Upload, Copy, Users, LayoutDashboard, Lightbulb, Brain, FileText, Settings, X, LogOut, Shield, Map, Briefcase, Scale, ScrollText, Coins, Building} from "lucide-react";
+import { Upload, Copy, Users, LayoutDashboard, Lightbulb, Brain, FileText, Settings, X, LogOut, Shield, Map, Briefcase, Scale, ScrollText, Coins, Building, Landmark, User} from "lucide-react";
 import logo from "../../assets/images/logo.png";
 import Button from "../ui/Button";
 import { useUserRole } from "../../hooks/useRole";
@@ -7,7 +7,8 @@ import { useState } from "react";
 export type SidebarNavId =|"stat-utilisateurs"| "stat-securite"| "stat"| "contribuables"| "analyses"| "doublons"
                           | "recommandations"| "rapports"| "import-territoires"| "import-activites"
                           | "setting" | "utilisateurs"| "gestion-activite"| "imports"| "import-regimes-fiscaux"
-                          | "import-formes-juridiques" | "import-types-impots"|"import-centres-gestionnaires";
+                          | "import-formes-juridiques" | "import-types-impots"|"import-centres-gestionnaires"
+                          | "import-personnes-physiques"| "import-personnes-morales";
 
 type NavItem = {
   id: SidebarNavId;
@@ -34,6 +35,12 @@ const adminNav: NavItem[] = [
 ];
 
 const chefNav: NavItem[] = [
+  { id: "imports", label: "Données de référence", icon: Upload ,
+    children: [
+      { id: "import-personnes-physiques", label: "Personnes physiques", icon: User, to: "/chef/personnes-physiques/import", children: [] },
+      { id: "import-personnes-morales", label: "Personnes morales", icon: Landmark, to: "/chef/personnes-morales/import", children: [] },
+    ],
+  },
   { id: "stat", label: "Tableau de bord", icon: LayoutDashboard, to: "/chef/chef/stat", children:[] },
   { id: "contribuables", label: "Contribuables", icon: Users, to: "/chef/contribuables?tab=list", children:[]  },
   { id: "analyses", label: "Analyses IA", icon: Brain, to: "/chef/analyses" , children:[] },

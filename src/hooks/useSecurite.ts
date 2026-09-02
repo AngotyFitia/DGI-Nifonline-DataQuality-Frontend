@@ -1,32 +1,23 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getSecuriteKpi, getAlertesSecurite } from "../services/authService";
 
 export function useSecuriteKpi(token: string) {
-  const [kpi, setKpi] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["securite-kpi"],
+    queryFn: () => getSecuriteKpi(token),
+    staleTime: 1000 * 60 * 5,
+    retry: 1,
+  });
 
-  useEffect(() => {
-    getSecuriteKpi(token)
-      .then(setKpi)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [token]);
-
-  return { kpi, loading, error };
+  return { kpi: data ?? null, loading: isLoading, error };
 }
 
 export function useAlertesSecurite(token: string) {
-  const [alertes, setAlertes] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["alertes-securite"],
+    queryFn: () => getAlertesSecurite(token),
+    staleTime: 1000 * 60 * 2
+  });
 
-  useEffect(() => {
-    getAlertesSecurite(token)
-      .then(setAlertes)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [token]);
-
-  return { alertes, loading, error };
+  return { alertes: data ?? [], loading: isLoading, error };
 }
